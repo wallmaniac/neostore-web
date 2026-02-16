@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Services - Space Edition</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      background: transparent;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      width: 100%;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      overflow: hidden;
+    }
+
+    .space-container {
+      background: radial-gradient(ellipse at center, rgba(10, 20, 60, 0.9) 0%, rgba(5, 10, 30, 0.95) 100%);
+      width: 100%;
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 24px;
+      box-shadow: 
+        0 8px 32px 0 rgba(31, 38, 135, 0.37),
+        0 0 20px rgba(0, 217, 255, 0.6),
+        0 0 40px rgba(0, 217, 255, 0.4),
+        0 0 60px rgba(168, 85, 247, 0.5),
+        0 0 80px rgba(168, 85, 247, 0.3),
+        inset 0 0 30px rgba(0, 217, 255, 0.1);
+      animation: framePulse 2.5s ease-in-out infinite;
+    }
+
+    @keyframes framePulse {
+      0% {
+        border-radius: 24px;
+        box-shadow: 
+          0 8px 32px 0 rgba(31, 38, 135, 0.37),
+          0 0 20px rgba(0, 217, 255, 0.4),
+          0 0 40px rgba(0, 217, 255, 0.2),
+          0 0 60px rgba(168, 85, 247, 0.3),
+          0 0 80px rgba(168, 85, 247, 0.15),
+          inset 0 0 30px rgba(0, 217, 255, 0.05);
+      }
+      25% {
+        border-radius: 26px;
+        box-shadow: 
+          0 10px 36px 0 rgba(31, 38, 135, 0.42),
+          0 0 24px rgba(0, 217, 255, 0.6),
+          0 0 50px rgba(0, 217, 255, 0.45),
+          0 0 75px rgba(168, 85, 247, 0.55),
+          0 0 100px rgba(168, 85, 247, 0.35),
+          inset 0 0 30px rgba(0, 217, 255, 0.12);
+      }
+      50% {
+        border-radius: 28px;
+        box-shadow: 
+          0 12px 40px 0 rgba(31, 38, 135, 0.5),
+          0 0 30px rgba(0, 217, 255, 0.9),
+          0 0 60px rgba(0, 217, 255, 0.7),
+          0 0 90px rgba(168, 85, 247, 0.8),
+          0 0 120px rgba(168, 85, 247, 0.6),
+          inset 0 0 30px rgba(0, 217, 255, 0.2);
+      }
+      75% {
+        border-radius: 26px;
+        box-shadow: 
+          0 10px 36px 0 rgba(31, 38, 135, 0.42),
+          0 0 24px rgba(0, 217, 255, 0.6),
+          0 0 50px rgba(0, 217, 255, 0.45),
+          0 0 75px rgba(168, 85, 247, 0.55),
+          0 0 100px rgba(168, 85, 247, 0.35),
+          inset 0 0 30px rgba(0, 217, 255, 0.12);
+      }
+      100% {
+        border-radius: 24px;
+        box-shadow: 
+          0 8px 32px 0 rgba(31, 38, 135, 0.37),
+          0 0 20px rgba(0, 217, 255, 0.4),
+          0 0 40px rgba(0, 217, 255, 0.2),
+          0 0 60px rgba(168, 85, 247, 0.3),
+          0 0 80px rgba(168, 85, 247, 0.15),
+          inset 0 0 30px rgba(0, 217, 255, 0.05);
+      }
+    }
+
+    /* Animated starfield background */
+    .stars {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .star {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle 3s ease-in-out infinite;
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 1; }
+    }
+
+    /* Floating particles */
+    .particle {
+      position: absolute;
+      background: radial-gradient(circle, rgba(0, 200, 255, 0.8), transparent);
+      border-radius: 50%;
+      pointer-events: none;
+      animation: float-particle linear infinite;
+    }
+
+    @keyframes float-particle {
+      0% {
+        transform: translateY(0) translateX(0);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100vh) translateX(50px);
+        opacity: 0;
+      }
+    }
+
+    /* Glowing orbs */
+    .glow-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: 0.15;
+      animation: orbit 15s linear infinite;
+    }
+
+    .orb-1 {
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, #00d9ff, transparent);
+      top: -100px;
+      right: -100px;
+      animation-duration: 20s;
+    }
+
+    .orb-2 {
+      width: 250px;
+      height: 250px;
+      background: radial-gradient(circle, #a855f7, transparent);
+      bottom: -80px;
+      left: -80px;
+      animation-duration: 25s;
+      animation-direction: reverse;
+    }
+
+    @keyframes orbit {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(30px, 30px); }
+    }
+
+    /* Main content wrapper */
+    .content {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: -2px 40px 0 40px;
+      max-width: 1000px;
+    }
+
+    /* Title with sci-fi effect */
+    .title {
+      text-align: center;
+      margin-bottom: 8px;
+      animation: slideDown 1s ease-out;
+    }
+
+    .title-text {
+      font-size: 3.87rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #00d9ff 0%, #a855f7 50%, #ec4899 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      transform: translateY(-19px);
+      animation: neonGlow 2s ease-in-out infinite;
+    }
+
+    .title-glow {
+      font-size: 2.5rem;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      background: linear-gradient(135deg, #00d9ff 0%, #a855f7 50%, #ec4899 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      opacity: 0.3;
+      filter: blur(10px);
+      font-weight: 800;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      z-index: -1;
+      animation: pulse-glow 2s ease-in-out infinite;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% { opacity: 0.2; filter: blur(8px); }
+      50% { opacity: 0.5; filter: blur(15px); }
+    }
+
+    @keyframes neonGlow {
+      0%, 100% { text-shadow: 0 0 8px rgba(0, 217, 255, 0.4), 0 0 15px rgba(236, 72, 153, 0.3); }
+      50% { text-shadow: 0 0 15px rgba(0, 217, 255, 0.6), 0 0 25px rgba(236, 72, 153, 0.5); }
+    }
+
+    /* Services grid */
+    .services-container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 25px;
+      width: 100%;
+      max-width: 900px;
+    }
+
+    /* Holographic card */
+    .holo-card {
+      position: relative;
+      background: linear-gradient(135deg, rgba(0, 217, 255, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%);
+      border: 2px solid transparent;
+      border-image: linear-gradient(135deg, #00d9ff 0%, #a855f7 100%) 1;
+      border-radius: 16px;
+      padding: 28px 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      animation: slideUp 0.6s ease-out backwards;
+      overflow: hidden;
+    }
+
+    .holo-card:nth-child(1) { animation-delay: 0.1s; }
+    .holo-card:nth-child(2) { animation-delay: 0.2s; }
+    .holo-card:nth-child(3) { animation-delay: 0.3s; }
+    .holo-card:nth-child(4) { animation-delay: 0.4s; }
+
+    .holo-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .holo-card:hover::before {
+      left: 100%;
+    }
+
+    .holo-card:hover {
+      background: linear-gradient(135deg, rgba(0, 217, 255, 0.2) 0%, rgba(168, 85, 247, 0.2) 100%);
+      border-image: linear-gradient(135deg, #00ffff 0%, #ff00ff 100%) 1;
+      transform: translateY(-10px);
+      box-shadow: 0 0 30px rgba(0, 217, 255, 0.5), inset 0 0 30px rgba(168, 85, 247, 0.1);
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .card-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+    }
+
+    /* Animated icon */
+    .icon-wrapper {
+      position: relative;
+      width: 70px;
+      height: 70px;
+      margin: 0 auto 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .icon-ring {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border: 2px solid #00d9ff;
+      border-radius: 50%;
+      opacity: 0.3;
+      animation: rotate 8s linear infinite;
+    }
+
+    .icon-ring:nth-child(2) {
+      width: 70%;
+      height: 70%;
+      border-color: #a855f7;
+      animation: rotate 5s linear infinite reverse;
+    }
+
+    @keyframes rotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .icon {
+      font-size: 38px;
+      background: linear-gradient(135deg, #00d9ff 0%, #a855f7 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      z-index: 3;
+      animation: pulse-icon 1.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse-icon {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.15); }
+    }
+
+    .title-card {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #00d9ff;
+      margin-bottom: 12px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .desc-card {
+      font-size: 0.85rem;
+      color: #b0c4de;
+      line-height: 1.6;
+      font-weight: 500;
+    }
+
+    /* Scan lines effect */
+    .scan-lines {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 255, 255, 0.05),
+        rgba(0, 255, 255, 0.05) 2px,
+        transparent 2px,
+        transparent 4px
+      );
+      animation: scan 8s linear infinite;
+      z-index: 5;
+    }
+
+    @keyframes scan {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(10px); }
+    }
+
+    /* HUD corners */
+    .hud-corner {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      border: 2px solid #00d9ff;
+      opacity: 0.5;
+      animation: flicker 0.15s infinite;
+    }
+
+    .corner-tl { top: 20px; left: 20px; border-right: none; border-bottom: none; }
+    .corner-tr { top: 20px; right: 20px; border-left: none; border-bottom: none; }
+    .corner-bl { bottom: 20px; left: 20px; border-right: none; border-top: none; }
+    .corner-br { bottom: 20px; right: 20px; border-left: none; border-top: none; }
+
+    @keyframes flicker {
+      0%, 19%, 21%, 100% { opacity: 0.5; }
+      20% { opacity: 0.8; }
+    }
+  </style>
+</head>
+<body>
+  <div class="space-container">
+    <!-- Background elements -->
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+    <div class="stars" id="starfield"></div>
+    <div id="particles"></div>
+
+    <!-- HUD corners -->
+    <div class="hud-corner corner-tl"></div>
+    <div class="hud-corner corner-tr"></div>
+    <div class="hud-corner corner-bl"></div>
+    <div class="hud-corner corner-br"></div>
+
+    <!-- Scan lines -->
+    <div class="scan-lines"></div>
+
+    <!-- Main content -->
+    <div class="content">
+      <div class="title">
+        <div style="position: relative;">
+          <div class="title-glow">AI EVOLUCIJA</div>
+          <h1 class="title-text">AI EVOLUCIJA</h1>
+        </div>
+      </div>
+
+      <div class="services-container">
+        <div class="holo-card">
+          <div class="card-content">
+            <div class="icon-wrapper">
+              <div class="icon-ring"></div>
+              <div class="icon-ring"></div>
+              <i class="fas fa-graduation-cap icon"></i>
+            </div>
+            <h3 class="title-card">AI Edukacije</h3>
+            <p class="desc-card">Obučavamo Vaš tim za korištenje AI alata i tehnologija</p>
+          </div>
+        </div>
+
+        <div class="holo-card">
+          <div class="card-content">
+            <div class="icon-wrapper">
+              <div class="icon-ring"></div>
+              <div class="icon-ring"></div>
+              <i class="fas fa-robot icon"></i>
+            </div>
+            <h3 class="title-card">Automatizacija</h3>
+            <p class="desc-card">Implementiramo AI riješenja za automatizaciju rutinskih zadataka</p>
+          </div>
+        </div>
+
+        <div class="holo-card">
+          <div class="card-content">
+            <div class="icon-wrapper">
+              <div class="icon-ring"></div>
+              <div class="icon-ring"></div>
+              <i class="fas fa-chart-line icon"></i>
+            </div>
+            <h3 class="title-card">Analitika</h3>
+            <p class="desc-card">Korištenje AI za dubinsku analizu podataka i poslovne prediktive</p>
+          </div>
+        </div>
+
+        <div class="holo-card">
+          <div class="card-content">
+            <div class="icon-wrapper">
+              <div class="icon-ring"></div>
+              <div class="icon-ring"></div>
+              <i class="fas fa-cogs icon"></i>
+            </div>
+            <h3 class="title-card">Optimizacija</h3>
+            <p class="desc-card">Poboljšanje efikasnosti kroz AI-vođenu optimizaciju</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Generate starfield
+    const starfield = document.getElementById('starfield');
+    for (let i = 0; i < 100; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      star.style.width = Math.random() * 2 + 'px';
+      star.style.height = star.style.width;
+      star.style.left = Math.random() * 100 + '%';
+      star.style.top = Math.random() * 100 + '%';
+      star.style.animationDelay = Math.random() * 3 + 's';
+      starfield.appendChild(star);
+    }
+
+    // Generate floating particles
+    const particlesContainer = document.getElementById('particles');
+    for (let i = 0; i < 20; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'particle';
+      particle.style.width = Math.random() * 4 + 2 + 'px';
+      particle.style.height = particle.style.width;
+      particle.style.left = Math.random() * 100 + '%';
+      particle.style.top = '100%';
+      particle.style.animationDuration = (Math.random() * 5 + 8) + 's';
+      particle.style.animationDelay = Math.random() * 2 + 's';
+      particlesContainer.appendChild(particle);
+    }
+
+    // Restart particles
+    setInterval(() => {
+      const particle = document.createElement('div');
+      particle.className = 'particle';
+      particle.style.width = Math.random() * 4 + 2 + 'px';
+      particle.style.height = particle.style.width;
+      particle.style.left = Math.random() * 100 + '%';
+      particle.style.top = '100%';
+      particle.style.animationDuration = (Math.random() * 5 + 8) + 's';
+      particlesContainer.appendChild(particle);
+      
+      setTimeout(() => particle.remove(), 13000);
+    }, 500);
+  </script>
+</body>
+</html>

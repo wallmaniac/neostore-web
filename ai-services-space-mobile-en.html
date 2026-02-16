@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Services - Space Mobile</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      background: transparent;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      width: 100vw;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      overflow-x: hidden;
+    }
+
+    .space-container {
+      background: radial-gradient(ellipse at center, rgba(10, 20, 60, 0.95) 0%, rgba(5, 10, 30, 0.98) 100%);
+      width: 100%;
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 35px 15px;
+    }
+
+    /* Animated starfield background */
+    .stars {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .star {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle 3s ease-in-out infinite;
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 1; }
+    }
+
+    /* Floating particles */
+    .particle {
+      position: absolute;
+      background: radial-gradient(circle, rgba(0, 200, 255, 0.8), transparent);
+      border-radius: 50%;
+      pointer-events: none;
+      animation: float-particle linear infinite;
+    }
+
+    @keyframes float-particle {
+      0% {
+        transform: translateY(0) translateX(0);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100vh) translateX(30px);
+        opacity: 0;
+      }
+    }
+
+    /* Glowing orbs */
+    .glow-orb {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.05;
+      animation: none;
+    }
+
+    .orb-1 {
+      width: 250px;
+      height: 250px;
+      background: radial-gradient(circle, #00d9ff, transparent);
+      top: -80px;
+      right: -80px;
+      animation-duration: 20s;
+    }
+
+    .orb-2 {
+      width: 200px;
+      height: 200px;
+      background: radial-gradient(circle, #a855f7, transparent);
+      bottom: -60px;
+      left: -60px;
+      animation-duration: 25s;
+      animation-direction: reverse;
+    }
+
+
+
+    /* Main content wrapper */
+    .content {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 8px 15px 0 15px;
+    }
+
+    /* Title with sci-fi effect */
+    .title {
+      text-align: center;
+      margin-bottom: 20px;
+      animation: slideDown 1s ease-out;
+      position: relative;
+    }
+
+    .title-text {
+      font-size: 1.85rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #00d9ff 0%, #a855f7 50%, #ec4899 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      animation: none;
+      display: inline-block;
+      margin-top: 3mm;
+    }
+
+    .title-glow {
+      display: none;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+
+
+    /* Services grid */
+    .services-container {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      width: 100%;
+    }
+
+    /* Holographic card */
+    .holo-card {
+      position: relative;
+      background: linear-gradient(135deg, rgba(0, 217, 255, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%);
+      border: 2px solid transparent;
+      border-image: linear-gradient(135deg, #00d9ff 0%, #a855f7 100%) 1;
+      border-radius: 14px;
+      padding: 22px 18px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      animation: slideUp 0.6s ease-out backwards;
+      overflow: hidden;
+      min-height: 150px;
+    }
+
+    .holo-card:nth-child(1) { animation-delay: 0.1s; }
+    .holo-card:nth-child(2) { animation-delay: 0.2s; }
+    .holo-card:nth-child(3) { animation-delay: 0.3s; }
+    .holo-card:nth-child(4) { animation-delay: 0.4s; }
+
+    .holo-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .holo-card:active::before {
+      left: 100%;
+    }
+
+    .holo-card:active {
+      background: linear-gradient(135deg, rgba(0, 217, 255, 0.2) 0%, rgba(168, 85, 247, 0.2) 100%);
+      border-image: linear-gradient(135deg, #00ffff 0%, #ff00ff 100%) 1;
+      box-shadow: 0 0 20px rgba(0, 217, 255, 0.4), inset 0 0 20px rgba(168, 85, 247, 0.1);
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .card-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+    }
+
+    /* Animated icon */
+    .icon-wrapper {
+      position: relative;
+      width: 76px;
+      height: 76px;
+      margin: 0 auto 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .icon-ring {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border: 2px solid #00d9ff;
+      border-radius: 50%;
+      opacity: 0.3;
+      animation: rotate 8s linear infinite;
+    }
+
+    .icon-ring:nth-child(2) {
+      width: 70%;
+      height: 70%;
+      border-color: #a855f7;
+      animation: rotate 5s linear infinite reverse;
+    }
+
+    @keyframes rotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .icon {
+      font-size: 36px;
+      background: linear-gradient(135deg, #00d9ff 0%, #a855f7 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      z-index: 3;
+      animation: none;
+    }
+
+
+
+    .title-card {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #00d9ff;
+      margin-bottom: 10px;
+      letter-spacing: 0.7px;
+      text-transform: uppercase;
+    }
+
+    .desc-card {
+      font-size: 0.95rem;
+      color: #c2d2ea;
+      line-height: 1.55;
+      font-weight: 500;
+    }
+
+    /* Scan lines effect */
+    .scan-lines {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 255, 255, 0.04),
+        rgba(0, 255, 255, 0.04) 2px,
+        transparent 2px,
+        transparent 4px
+      );
+      animation: scan 8s linear infinite;
+      z-index: 5;
+    }
+
+    @keyframes scan {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(10px); }
+    }
+  </style>
+</head>
+<body>
+  <div class="space-container">
+    <!-- Background elements -->
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+    <div class="stars" id="starfield"></div>
+    <div id="particles"></div>
+
+    <!-- Scan lines -->
+    <div class="scan-lines"></div>
+
+    <!-- Main content -->
+    <div class="content">
+      <div class="title">
+        <div class="title-glow">AI EVOLUTION</div>
+        <h1 class="title-text">AI EVOLUTION</h1>
+      </div>
+
+      <div class="services-container">
+        <div class="holo-card">
+          <div class="card-content">
+            <div class="icon-wrapper">
+              <div class="icon-ring"></div>
+              <div class="icon-ring"></div>
+              <i class="fas fa-graduation-cap icon"></i>
+            </div>
+            <h3 class="title-card">AI Education</h3>
+            <p class="desc-card">We train your team to use AI tools and technologies</p>
+          </div>
+        </div>
+
+        <div class="holo-card">
+          <div class="card-content">
+            <div class="icon-wrapper">
+              <div class="icon-ring"></div>
+              <div class="icon-ring"></div>
+              <i class="fas fa-robot icon"></i>
+            </div>
+            <h3 class="title-card">Automation</h3>
+            <p class="desc-card">We implement AI solutions to automate routine tasks</p>
+          </div>
+        </div>
+
+        <div class="holo-card">
+          <div class="card-content">
+            <div class="icon-wrapper">
+              <div class="icon-ring"></div>
+              <div class="icon-ring"></div>
+              <i class="fas fa-chart-line icon"></i>
+            </div>
+            <h3 class="title-card">Analytics</h3>
+            <p class="desc-card">Using AI for deep data analysis and business predictions</p>
+          </div>
+        </div>
+
+        <div class="holo-card">
+          <div class="card-content">
+            <div class="icon-wrapper">
+              <div class="icon-ring"></div>
+              <div class="icon-ring"></div>
+              <i class="fas fa-cogs icon"></i>
+            </div>
+            <h3 class="title-card">Optimization</h3>
+            <p class="desc-card">Improving efficiency through AI-driven optimization</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Generate starfield
+    const starfield = document.getElementById('starfield');
+    for (let i = 0; i < 80; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      star.style.width = Math.random() * 1.5 + 'px';
+      star.style.height = star.style.width;
+      star.style.left = Math.random() * 100 + '%';
+      star.style.top = Math.random() * 100 + '%';
+      star.style.animationDelay = Math.random() * 3 + 's';
+      starfield.appendChild(star);
+    }
+
+    // Particles disabled for performance optimization
+  </script>
+</body>
+</html>
