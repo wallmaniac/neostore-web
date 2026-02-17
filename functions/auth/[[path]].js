@@ -29,6 +29,7 @@ export async function onRequest(context) {
       
       if (data.access_token) {
         // Return HTML that posts the token back to the CMS
+        const messageData = JSON.stringify({ token: data.access_token, provider: 'github' });
         return new Response(`
           <!DOCTYPE html>
           <html>
@@ -37,8 +38,9 @@ export async function onRequest(context) {
           </head>
           <body>
             <script>
+              const messageData = ${messageData};
               window.opener.postMessage(
-                'authorization:github:success:${JSON.stringify({ token: data.access_token, provider: 'github' })}',
+                'authorization:github:success:' + JSON.stringify(messageData),
                 window.location.origin
               );
               window.close();
