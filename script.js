@@ -72,7 +72,8 @@ if (document.readyState === 'loading') {
 }
 
 // Language Switching
-let currentLang = 'hr';
+// Use var so re-declaration does not crash if script is loaded twice
+var currentLang = typeof currentLang !== 'undefined' ? currentLang : 'hr';
 let heroStepIndex = 0;
 let heroStepAutoTimer = null;
 
@@ -360,7 +361,7 @@ if (contactForm) {
         formData.append('message', message);
         
         try {
-            const response = await fetch('/_functions/contact', {
+            const response = await fetch('/contact', {
                 method: 'POST',
                 body: formData
             });
