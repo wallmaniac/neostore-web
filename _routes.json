@@ -1,0 +1,8 @@
+{
+  "routes": [
+    {
+      "pattern": "/_functions/*",
+      "path": "/functions/*.js"
+    }
+  ]
+}
