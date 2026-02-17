@@ -1,4 +1,5 @@
-export default async (request, context) => {
+export async function onRequest(context) {
+  const { request } = context;
   // Handle CORS preflight
   if (request.method === 'OPTIONS') {
     return new Response(null, {
