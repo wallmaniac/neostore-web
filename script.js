@@ -345,7 +345,38 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 const contactForm = document.getElementById('contactForm');
 
 if (contactForm) {
-    // Allow normal form submission to FormSubmit
+    contactForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const formData = new FormData(contactForm);
+        
+        try {
+            const response = await fetch('/api/contact', {
+                method: 'POST',
+                body: formData
+            });
+            
+            if (response.ok) {
+                const successMsg = currentLang === 'hr' 
+                    ? 'Hvala! Vaša poruka je uspješno poslana. Kontaktirat ćemo Vas uskoro.' 
+                    : 'Thank you! Your message has been sent successfully. We will contact you soon.';
+                
+                alert(successMsg);
+                contactForm.reset();
+            } else {
+                const errorMsg = currentLang === 'hr'
+                    ? 'Greška pri slanju poruke. Pokušajte ponovno.'
+                    : 'Error sending message. Please try again.';
+                alert(errorMsg);
+            }
+        } catch (error) {
+            console.error('Form error:', error);
+            const errorMsg = currentLang === 'hr'
+                ? 'Greška pri slanju poruke. Pokušajte ponovno.'
+                : 'Error sending message. Please try again.';
+            alert(errorMsg);
+        }
+    });
 }
 // Active navigation link on scroll
 const sections = document.querySelectorAll('.section, .hero');
