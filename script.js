@@ -1111,4 +1111,96 @@ if (document.readyState === 'loading') {
 
 window.addEventListener('resize', ensureAOSVisibility);
 
+// ============================================
+// Content Loader - Integrated
+// ============================================
+async function loadContent() {
+    try {
+        // Load all content files
+        const [hero, web, ai, telecom, business, contact, settings] = await Promise.all([
+            fetch('/content/hero.json').then(r => r.json()),
+            fetch('/content/web.json').then(r => r.json()),
+            fetch('/content/ai.json').then(r => r.json()),
+            fetch('/content/telecom.json').then(r => r.json()),
+            fetch('/content/business.json').then(r => r.json()),
+            fetch('/content/contact.json').then(r => r.json()),
+            fetch('/content/settings.json').then(r => r.json())
+        ]);
+        
+        // Update page title
+        document.title = settings.site_title;
+        document.querySelector('meta[name="description"]').content = settings.site_description;
+        
+        const lang = currentLang;
+        
+        // Update hero section
+        updateElement('.hero-badge span', hero[`badge_${lang}`]);
+        updateTitleWords(hero[`title_${lang}`]);
+        updateElement('.hero-subtitle', hero[`subtitle_${lang}`], true);
+        
+        // Update web section
+        updateElement('#web .section-title', web[`title_${lang}`]);
+        updateElement('#web .section-subtitle', web[`subtitle_${lang}`]);
+        updateElement('#web .gradient-animated', web[`heading_${lang}`]);
+        updateElement('#web .content-text p', web[`description_${lang}`]);
+        
+        // Update AI section
+        updateElement('#ai .section-title', ai[`title_${lang}`]);
+        updateElement('#ai .section-subtitle', ai[`subtitle_${lang}`]);
+        updateElement('#ai .gradient-animated', ai[`heading_${lang}`]);
+        updateElement('#ai .content-text p', ai[`description_${lang}`]);
+        
+        // Update telecom section
+        updateElement('#telekomunikacije .section-title', telecom[`title_${lang}`]);
+        updateElement('#telekomunikacije .section-subtitle', telecom[`subtitle_${lang}`]);
+        const telecomCards = document.querySelectorAll('#telekomunikacije .telecom-card h3');
+        if (telecomCards[0]) telecomCards[0].textContent = telecom[`b2b_title_${lang}`];
+        if (telecomCards[1]) telecomCards[1].textContent = telecom[`service_title_${lang}`];
+        const telecomDescs = document.querySelectorAll('#telekomunikacije .telecom-card > p');
+        if (telecomDescs[0]) telecomDescs[0].textContent = telecom[`b2b_description_${lang}`];
+        if (telecomDescs[1]) telecomDescs[1].textContent = telecom[`service_description_${lang}`];
+        
+        // Update business section
+        updateElement('#kreditiranje .section-title', business[`title_${lang}`]);
+        updateElement('#kreditiranje .section-subtitle', business[`subtitle_${lang}`]);
+        
+        // Update contact section
+        updateElement('#kontakt .section-title', contact[`title_${lang}`]);
+        
+    } catch (error) {
+        console.log('Content files not loaded, using default HTML content');
+    }
+}
+
+function updateElement(selector, text, isHTML = false) {
+    const el = document.querySelector(selector);
+    if (el && text) {
+        if (isHTML) {
+            el.innerHTML = text;
+        } else {
+            el.textContent = text;
+        }
+    }
+}
+
+function updateTitleWords(titleText) {
+    const words = titleText.split(' ');
+    const titleWords = document.querySelectorAll('.hero-title .title-word');
+    words.forEach((word, i) => {
+        if (titleWords[i]) {
+            titleWords[i].textContent = word;
+        }
+    });
+}
+
+// Load content when page is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadContent);
+} else {
+    loadContent();
+}
+
+// Reload content when language changes
+window.addEventListener('languageChange', loadContent);
+
 console.log('Neotel website loaded successfully! 🚀');
