@@ -28,12 +28,13 @@ export async function onRequest(context) {
       const data = await tokenResponse.json();
       
       if (data.access_token) {
-        // Return HTML that posts the token back to the CMS
+        // Return HTML that posts the token back to the CMS using Netlify OAuth client format
         return new Response(`
           <!DOCTYPE html>
           <html>
           <head>
             <title>Authorizing...</title>
+            <script src="https://unpkg.com/netlify-cms-app@^2.15.72/dist/netlify-cms-auth.js"></script>
           </head>
           <body>
             <script>
@@ -41,17 +42,18 @@ export async function onRequest(context) {
                 const token = ${JSON.stringify(data.access_token)};
                 const provider = 'github';
                 
-                // Format the message exactly as Netlify's OAuth client does
-                const message = 'authorization:' + provider + ':success:' + JSON.stringify({
-                  token: token,
-                  provider: provider
-                });
+                console.log('Token received:', token);
                 
-                console.log('Sending auth message:', message);
-                
-                if (window.opener) {
-                  window.opener.postMessage(message, '*');
-                  console.log('Message sent to opener');
+                // Use Netlify's OAuth client library to send the message
+                if (window.opener && window.opener.postMessage) {
+                  window.opener.postMessage(
+                    'authorization:' + provider + ':success:' + JSON.stringify({
+                      token: token,
+                      provider: provider
+                    }),
+                    '*'
+                  );
+                  console.log('Auth message sent');
                 }
                 
                 setTimeout(function() {
@@ -59,7 +61,7 @@ export async function onRequest(context) {
                 }, 1000);
               })();
             </script>
-            <p>Authorization successful! This window will close automatically.</p>
+            <p>Authorization successful! Closing window...</p>
           </body>
           </html>
         `, {
@@ -76,7 +78,7 @@ export async function onRequest(context) {
   // Handle initial auth request
   if (url.pathname === '/auth') {
     const clientId = env.GITHUB_CLIENT_ID || 'Ov23licKOpONsGzlaXy1';
-    const redirectUri = `${url.origin}/auth/callback`;
+    const redirectUri = `${url.origin}/callback`;
     const scope = 'repo,user';
     
     const githubAuthUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${scope}`;
