@@ -2700,7 +2700,7 @@ body {
     .hero-grid {
         grid-template-columns: 1fr;
         gap: 27px;
-        margin-left: -1mm;
+        margin-left: -2mm;
     }
 
     .hero-title {
