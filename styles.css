@@ -2634,18 +2634,18 @@ body {
         height: 40px;
         max-width: 180px;
         transition: none;
-        transform: none;
+        transform: translateX(5mm);
         filter: none;
         animation: none;
     }
 
     .nav-logo-img:active {
         animation: none;
-        transform: none;
+        transform: translateX(5mm);
     }
 
     .nav-logo-img:hover {
-        transform: none;
+        transform: translateX(5mm);
         filter: none;
     }
 
@@ -2822,6 +2822,17 @@ body {
     .services-grid,
     .financing-grid {
         grid-template-columns: 1fr;
+        justify-items: center;
+    }
+
+    #kreditiranje .container {
+        padding: 0;
+    }
+
+    .finance-card {
+        max-width: 400px;
+        width: calc(100% - 40px);
+        margin: 0 auto;
     }
 
     .footer-content {
