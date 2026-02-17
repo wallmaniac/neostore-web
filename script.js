@@ -351,12 +351,14 @@ if (contactForm) {
         const formData = new FormData(contactForm);
         
         try {
-            const response = await fetch('/.netlify/functions/contact', {
+            const response = await fetch('/_functions/contact', {
                 method: 'POST',
                 body: formData
             });
             
-            if (response.ok) {
+            const data = await response.json();
+            
+            if (response.ok && data.success) {
                 const successMsg = currentLang === 'hr' 
                     ? 'Hvala! Vaša poruka je uspješno poslana. Kontaktirat ćemo Vas uskoro.' 
                     : 'Thank you! Your message has been sent successfully. We will contact you soon.';
