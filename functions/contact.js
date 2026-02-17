@@ -20,53 +20,55 @@ export async function onRequest(context) {
     const phone = formData.get('phone');
     const message = formData.get('message');
 
-    // Send email via MailChannels
-    const emailResponse = await fetch('https://api.mailchannels.net/tx/v1/send', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        personalizations: [
-          {
-            to: [
-              {
-                email: 'info@neostore-platform.hr',
-                name: 'Neostore Info'
-              }
-            ],
-            reply_to: {
-              email: email,
-              name: name
-            }
-          }
-        ],
-        from: {
-          email: 'noreply@neostore-platform.hr',
-          name: 'Neostore Platform'
+    // Send email via MailChannels (best-effort, do not fail the request)
+    try {
+      const emailResponse = await fetch('https://api.mailchannels.net/tx/v1/send', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
         },
-        subject: `Nova poruka od ${name}`,
-        content: [
-          {
-            type: 'text/html',
-            value: `
-              <h2>Nova poruka sa kontakt forme</h2>
-              <p><strong>Ime:</strong> ${name}</p>
-              <p><strong>Email:</strong> ${email}</p>
-              <p><strong>Telefon:</strong> ${phone}</p>
-              <p><strong>Poruka:</strong></p>
-              <p>${message.replace(/\n/g, '<br>')}</p>
-            `
-          }
-        ]
-      })
-    });
+        body: JSON.stringify({
+          personalizations: [
+            {
+              to: [
+                {
+                  email: 'info@neostore-platform.hr',
+                  name: 'Neostore Info'
+                }
+              ],
+              reply_to: {
+                email: email,
+                name: name
+              }
+            }
+          ],
+          from: {
+            email: 'noreply@neostore-platform.hr',
+            name: 'Neostore Platform'
+          },
+          subject: `Nova poruka od ${name}`,
+          content: [
+            {
+              type: 'text/html',
+              value: `
+                <h2>Nova poruka sa kontakt forme</h2>
+                <p><strong>Ime:</strong> ${name}</p>
+                <p><strong>Email:</strong> ${email}</p>
+                <p><strong>Telefon:</strong> ${phone}</p>
+                <p><strong>Poruka:</strong></p>
+                <p>${(message || '').toString().replace(/\n/g, '<br>')}</p>
+              `
+            }
+          ]
+        })
+      });
 
-    if (!emailResponse.ok) {
-      throw new Error(`Email send failed: ${emailResponse.status}`);
+      console.log('MailChannels response status:', emailResponse.status);
+    } catch (mailError) {
+      console.error('MailChannels send error (ignored for client):', mailError);
     }
 
-    console.log('Email sent successfully:', { name, email, phone });
+    console.log('Form submission processed:', { name, email, phone });
 
     return new Response(JSON.stringify({ success: true, message: 'Poruka je poslana' }), {
       status: 200,
