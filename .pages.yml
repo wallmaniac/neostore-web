@@ -1,0 +1,63 @@
+title: Neostore Website
+description: Content management for Neostore website
+
+collections:
+  - name: homepage
+    label: Homepage Content
+    files:
+      - name: hero
+        label: Hero Section
+        file: content/hero.json
+        fields:
+          - name: title_hr
+            label: Title (Croatian)
+            widget: string
+            default: "Vaš partner za digitalno poslovanje"
+          - name: title_en
+            label: Title (English)
+            widget: string
+            default: "Your partner for digital business"
+          - name: subtitle_hr
+            label: Subtitle (Croatian)
+            widget: text
+            default: "Web Dizajn • AI riješenja • Telekomunikacije • Poslovno planiranje"
+          - name: subtitle_en
+            label: Subtitle (English)
+            widget: text
+            default: "Web Design • AI Solutions • Telecommunications • Business Planning"
+          - name: badge_hr
+            label: Badge Text (Croatian)
+            widget: string
+            default: "Voditelj u digitalnoj transformaciji"
+          - name: badge_en
+            label: Badge Text (English)
+            widget: string
+            default: "Leader in Digital Transformation"
+      
+      - name: settings
+        label: Site Settings
+        file: content/settings.json
+        fields:
+          - name: site_title
+            label: Site Title
+            widget: string
+            default: "Neostore - Telekomunikacije, Web Dizajn, AI Riješenja"
+          - name: site_description
+            label: Site Description
+            widget: text
+            default: "Neostore - Voditelj u telekomunikacijama, izradi web stranica, AI poslovnim riješenjima i servisu uređaja"
+          - name: contact_phone
+            label: Contact Phone
+            widget: string
+            default: "+385 95 2229994"
+          - name: contact_email
+            label: Contact Email
+            widget: string
+            default: "info@neotel-media.hr"
+          - name: contact_address
+            label: Contact Address
+            widget: string
+            default: "Alberta Ognjana Štrige 7, Zagreb"
+
+media_folder: "images"
+public_folder: "/images"
