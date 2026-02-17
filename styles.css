@@ -521,6 +521,7 @@ body {
     position: relative;
     z-index: 5;
     text-align: left;
+    pointer-events: auto;
 }
 
 .hero-right-section {
@@ -639,6 +640,7 @@ body {
     max-width: 650px;
     position: relative;
     z-index: 10;
+    pointer-events: auto;
 }
 
 .subtitle-link {
@@ -650,6 +652,7 @@ body {
     position: relative;
     padding: 0 2px;
     z-index: 15;
+    pointer-events: auto !important;
 }
 
 .subtitle-link::after {
