@@ -21,23 +21,60 @@ export default async (request, context) => {
   try {
     const formData = await request.formData();
     
-    const submission = {
-      timestamp: new Date().toISOString(),
-      name: formData.get('name'),
-      email: formData.get('email'),
-      phone: formData.get('phone'),
-      message: formData.get('message')
-    };
+    const name = formData.get('name');
+    const email = formData.get('email');
+    const phone = formData.get('phone');
+    const message = formData.get('message');
 
-    // Save to Cloudflare KV
-    const submissionId = `submission-${Date.now()}`;
-    if (context.env && context.env.SUBMISSIONS) {
-      await context.env.SUBMISSIONS.put(submissionId, JSON.stringify(submission));
+    // Send email via MailChannels
+    const emailResponse = await fetch('https://api.mailchannels.net/tx/v1/send', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        personalizations: [
+          {
+            to: [
+              {
+                email: 'info@neostore-platform.hr',
+                name: 'Neostore Info'
+              }
+            ],
+            reply_to: {
+              email: email,
+              name: name
+            }
+          }
+        ],
+        from: {
+          email: 'noreply@neostore-platform.hr',
+          name: 'Neostore Platform'
+        },
+        subject: `Nova poruka od ${name}`,
+        content: [
+          {
+            type: 'text/html',
+            value: `
+              <h2>Nova poruka sa kontakt forme</h2>
+              <p><strong>Ime:</strong> ${name}</p>
+              <p><strong>Email:</strong> ${email}</p>
+              <p><strong>Telefon:</strong> ${phone}</p>
+              <p><strong>Poruka:</strong></p>
+              <p>${message.replace(/\n/g, '<br>')}</p>
+            `
+          }
+        ]
+      })
+    });
+
+    if (!emailResponse.ok) {
+      throw new Error(`Email send failed: ${emailResponse.status}`);
     }
 
-    console.log('Form submission saved:', submission);
+    console.log('Email sent successfully:', { name, email, phone });
 
-    return new Response(JSON.stringify({ success: true, message: 'Form submitted' }), {
+    return new Response(JSON.stringify({ success: true, message: 'Poruka je poslana' }), {
       status: 200,
       headers: {
         'Content-Type': 'application/json',

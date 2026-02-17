@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pregled Poruka - Neostore</title>
+    <title>Sistem Poruka - Neostore</title>
     <style>
         * {
             margin: 0;
@@ -16,20 +16,23 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .container {
-            max-width: 1200px;
-            margin: 0 auto;
+            max-width: 600px;
             background: white;
             border-radius: 15px;
-            padding: 30px;
+            padding: 40px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            text-align: center;
         }
         
         h1 {
             color: #333;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
             font-size: 2rem;
         }
         
@@ -37,6 +40,7 @@
             color: #666;
             margin-bottom: 30px;
             font-size: 1rem;
+            line-height: 1.6;
         }
         
         .controls {
@@ -154,131 +158,78 @@
             opacity: 0.5;
         }
         
-        .count {
-            background: #667eea;
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.9rem;
+        .info-box {
+            background: #f0f4ff;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        
+        .info-box strong {
+            color: #667eea;
+        }
+        
+        .email-address {
+            font-size: 1.1rem;
+            color: #667eea;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+        
+        .status {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+            color: #27ae60;
+            font-size: 1.1rem;
+        }
+        
+        .checkmark {
+            font-size: 1.5rem;
+        }
+        
+        a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        a:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>📨 Pregled Poruka</h1>
-        <p class="subtitle">Sve poslane poruke iz kontakt forme</p>
+        <h1>✉️ Sistem Poruka</h1>
         
-        <div class="controls">
-            <span class="count">Ukupno: <strong id="total">0</strong></span>
-            <button onclick="exportAsJSON()">📥 Preuzmi kao JSON</button>
-            <button onclick="exportAsCSV()">📥 Preuzmi kao CSV</button>
-            <button class="danger" onclick="clearAll()">🗑️ Obriši sve</button>
-        </div>
+        <p class="subtitle">Sve poruke sa kontakt forme se šalju direktno na vašu email adresu</p>
         
-        <div id="submissions-container" class="submissions-list">
-            <div class="empty-state">
-                <p>Nema poslanih poruka</p>
+        <div class="info-box">
+            <strong>Gdje dolaze poruke?</strong><br><br>
+            Sve poruke koje korisnici pošalju kroz kontakt formu se direktno preusmjeravaju na:<br>
+            <div class="email-address">📧 info@neostore-platform.hr</div>
+            
+            <strong>Kako funkcionira?</strong><br>
+            1. Korisnik popuni formu i klikne "Pošalji"<br>
+            2. Poruka se direktno pošalje na info@neostore-platform.hr<br>
+            3. Korisnik dobija potvrdu da je poruka uspješno poslana<br>
+            4. Vi možete odgovoriti direktno na korisniku iz vaše email aplikacije<br><br>
+            
+            <div class="status">
+                <span class="checkmark">✅</span>
+                <span>Sistem je aktivan i radi bez problema</span>
             </div>
         </div>
+        
+        <p style="margin-top: 30px; color: #999; font-size: 0.9rem;">
+            Poruka je poslana sa neostore-platform.hr | Za dodatnu pomoć, <a href="mailto:info@neostore-platform.hr">kontaktirajte nas</a>
+        </p>
     </div>
-    
-    <script>
-        async function loadSubmissions() {
-            const container = document.getElementById('submissions-container');
-            const totalEl = document.getElementById('total');
-            
-            try {
-                const response = await fetch('/_functions/submissions-api');
-                const submissions = await response.json();
-                
-                totalEl.textContent = submissions.length;
-                
-                if (!submissions || submissions.length === 0) {
-                    container.innerHTML = '<div class="empty-state"><p>Nema poslanih poruka</p></div>';
-                    return;
-                }
-                
-                container.innerHTML = submissions.map((sub, idx) => {
-                    const date = new Date(sub.timestamp).toLocaleString('hr-HR');
-                    return `
-                        <div class="submission-card">
-                            <div class="submission-header">
-                                <div class="submission-name">${escapeHtml(sub.name)}</div>
-                                <div class="submission-date">${date}</div>
-                            </div>
-                            <div class="submission-info">
-                                <div class="info-row">
-                                    <span class="info-label">📧 Email:</span>
-                                    <span class="info-value"><a href="mailto:${escapeHtml(sub.email)}">${escapeHtml(sub.email)}</a></span>
-                                </div>
-                                <div class="info-row">
-                                    <span class="info-label">📱 Telefon:</span>
-                                    <span class="info-value"><a href="tel:${escapeHtml(sub.phone)}">${escapeHtml(sub.phone)}</a></span>
-                                </div>
-                            </div>
-                            <div class="info-row">
-                                <span class="info-label">💬 Poruka:</span>
-                            </div>
-                            <div class="message-box">${escapeHtml(sub.message)}</div>
-                        </div>
-                    `;
-                }).join('');
-            } catch (error) {
-                console.error('Error loading submissions:', error);
-                container.innerHTML = '<div class="empty-state"><p>Greška pri učitavanju poruka</p></div>';
-            }
-        }
-        
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-        
-        function exportAsJSON() {
-            fetch('/_functions/submissions-api')
-                .then(r => r.json())
-                .then(submissions => {
-                    const dataStr = JSON.stringify(submissions, null, 2);
-                    const dataBlob = new Blob([dataStr], { type: 'application/json' });
-                    const url = URL.createObjectURL(dataBlob);
-                    const link = document.createElement('a');
-                    link.href = url;
-                    link.download = `neostore-submissions-${new Date().toISOString().split('T')[0]}.json`;
-                    link.click();
-                });
-        }
-        
-        function exportAsCSV() {
-            fetch('/_functions/submissions-api')
-                .then(r => r.json())
-                .then(submissions => {
-                    let csv = 'Ime,Email,Telefon,Poruka,Datum\n';
-                    csv += submissions.map(sub => 
-                        `"${sub.name.replace(/"/g, '""')}","${sub.email}","${sub.phone}","${sub.message.replace(/"/g, '""').replace(/\n/g, ' ')}","${sub.timestamp}"`
-                    ).join('\n');
-                    
-                    const dataBlob = new Blob([csv], { type: 'text/csv' });
-                    const url = URL.createObjectURL(dataBlob);
-                    const link = document.createElement('a');
-                    link.href = url;
-                    link.download = `neostore-submissions-${new Date().toISOString().split('T')[0]}.csv`;
-                    link.click();
-                });
-        }
-        
-        function clearAll() {
-            if (confirm('Dali ste sigurni? Ovo će obrisati SVE poruke!')) {
-                // Note: KV clearing would require a separate DELETE endpoint
-                alert('Za brisanje svih poruka, kontaktirajte administratora');
-            }
-        }
-        
-        // Load on page load
-        loadSubmissions();
-        
-        // Refresh every 5 seconds
-        setInterval(loadSubmissions, 5000);
+</body>
+</html>
     </script>
 </body>
 </html>
