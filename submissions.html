@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pregled Poruka - Neostore</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2rem;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1rem;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s;
+        }
+        
+        button:hover {
+            background: #764ba2;
+        }
+        
+        button.danger {
+            background: #e74c3c;
+        }
+        
+        button.danger:hover {
+            background: #c0392b;
+        }
+        
+        .submissions-list {
+            display: grid;
+            gap: 20px;
+        }
+        
+        .submission-card {
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.3s;
+        }
+        
+        .submission-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+        
+        .submission-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 10px;
+        }
+        
+        .submission-name {
+            font-weight: bold;
+            color: #667eea;
+            font-size: 1.2rem;
+        }
+        
+        .submission-date {
+            color: #999;
+            font-size: 0.9rem;
+        }
+        
+        .submission-info {
+            display: grid;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .info-row {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .info-label {
+            font-weight: bold;
+            color: #666;
+            min-width: 100px;
+        }
+        
+        .info-value {
+            color: #333;
+            word-break: break-all;
+        }
+        
+        .message-box {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 10px;
+            line-height: 1.6;
+            color: #333;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+        }
+        
+        .empty-state svg {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+        
+        .count {
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📨 Pregled Poruka</h1>
+        <p class="subtitle">Sve poslane poruke iz kontakt forme</p>
+        
+        <div class="controls">
+            <span class="count">Ukupno: <strong id="total">0</strong></span>
+            <button onclick="exportAsJSON()">📥 Preuzmi kao JSON</button>
+            <button onclick="exportAsCSV()">📥 Preuzmi kao CSV</button>
+            <button class="danger" onclick="clearAll()">🗑️ Obriši sve</button>
+        </div>
+        
+        <div id="submissions-container" class="submissions-list">
+            <div class="empty-state">
+                <p>Nema poslanih poruka</p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function loadSubmissions() {
+            const submissions = JSON.parse(localStorage.getItem('contactSubmissions') || '[]');
+            const container = document.getElementById('submissions-container');
+            const totalEl = document.getElementById('total');
+            
+            totalEl.textContent = submissions.length;
+            
+            if (submissions.length === 0) {
+                container.innerHTML = '<div class="empty-state"><p>Nema poslanih poruka</p></div>';
+                return;
+            }
+            
+            container.innerHTML = submissions.reverse().map((sub, idx) => {
+                const date = new Date(sub.timestamp).toLocaleString('hr-HR');
+                return `
+                    <div class="submission-card">
+                        <div class="submission-header">
+                            <div class="submission-name">${escapeHtml(sub.name)}</div>
+                            <div class="submission-date">${date}</div>
+                        </div>
+                        <div class="submission-info">
+                            <div class="info-row">
+                                <span class="info-label">📧 Email:</span>
+                                <span class="info-value"><a href="mailto:${escapeHtml(sub.email)}">${escapeHtml(sub.email)}</a></span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">📱 Telefon:</span>
+                                <span class="info-value"><a href="tel:${escapeHtml(sub.phone)}">${escapeHtml(sub.phone)}</a></span>
+                            </div>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">💬 Poruka:</span>
+                        </div>
+                        <div class="message-box">${escapeHtml(sub.message)}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        function exportAsJSON() {
+            const submissions = JSON.parse(localStorage.getItem('contactSubmissions') || '[]');
+            const dataStr = JSON.stringify(submissions, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `neostore-submissions-${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+        }
+        
+        function exportAsCSV() {
+            const submissions = JSON.parse(localStorage.getItem('contactSubmissions') || '[]');
+            let csv = 'Ime,Email,Telefon,Poruka,Datum\n';
+            csv += submissions.map(sub => 
+                `"${sub.name.replace(/"/g, '""')}","${sub.email}","${sub.phone}","${sub.message.replace(/"/g, '""').replace(/\n/g, ' ')}","${sub.timestamp}"`
+            ).join('\n');
+            
+            const dataBlob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `neostore-submissions-${new Date().toISOString().split('T')[0]}.csv`;
+            link.click();
+        }
+        
+        function clearAll() {
+            if (confirm('Dali ste sigurni? Ovo će obrisati SVE poruke!')) {
+                localStorage.removeItem('contactSubmissions');
+                loadSubmissions();
+                alert('Sve poruke su obrisane');
+            }
+        }
+        
+        // Load on page load
+        loadSubmissions();
+        
+        // Refresh every 5 seconds
+        setInterval(loadSubmissions, 5000);
+    </script>
+</body>
+</html>
