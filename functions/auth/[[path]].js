@@ -28,47 +28,43 @@ export async function onRequest(context) {
       const data = await tokenResponse.json();
       
       if (data.access_token) {
-        // Return HTML that posts the token back to the CMS using Netlify OAuth client format
-        return new Response(`
+        // Return a proper HTML page that uses the official postMessage format
+        const html = `
           <!DOCTYPE html>
           <html>
           <head>
-            <title>Authorizing...</title>
-            <script src="https://unpkg.com/netlify-cms-app@^2.15.72/dist/netlify-cms-auth.js"></script>
+            <meta charset="utf-8">
+            <title>Authorization Complete</title>
+            <script>
+              // Use the exact format from netlify-cms-oauth-provider
+              (function() {
+                function receiveMessage(e) {
+                  console.log("receiveMessage", e);
+                  window.opener.postMessage(
+                    'authorization:github:success:' + JSON.stringify({
+                      token: "${data.access_token}",
+                      provider: "github"
+                    }),
+                    e.origin
+                  );
+                }
+                window.addEventListener("message", receiveMessage, false);
+                // Send to opener
+                window.opener.postMessage("authorizing:github", "*");
+              })()
+            </script>
           </head>
           <body>
-            <script>
-              (function() {
-                const token = ${JSON.stringify(data.access_token)};
-                const provider = 'github';
-                
-                console.log('Token received:', token);
-                
-                // Use Netlify's OAuth client library to send the message
-                if (window.opener && window.opener.postMessage) {
-                  window.opener.postMessage(
-                    'authorization:' + provider + ':success:' + JSON.stringify({
-                      token: token,
-                      provider: provider
-                    }),
-                    '*'
-                  );
-                  console.log('Auth message sent');
-                }
-                
-                setTimeout(function() {
-                  window.close();
-                }, 1000);
-              })();
-            </script>
-            <p>Authorization successful! Closing window...</p>
+            <p>Authorizing...</p>
           </body>
           </html>
-        `, {
+        `;
+        
+        return new Response(html, {
           headers: { 'Content-Type': 'text/html' },
         });
       } else {
-        throw new Error('No access token received');
+        throw new Error('No access token received: ' + JSON.stringify(data));
       }
     } catch (error) {
       return new Response(`Authorization failed: ${error.message}`, { status: 500 });
@@ -78,7 +74,7 @@ export async function onRequest(context) {
   // Handle initial auth request
   if (url.pathname === '/auth') {
     const clientId = env.GITHUB_CLIENT_ID || 'Ov23licKOpONsGzlaXy1';
-    const redirectUri = `${url.origin}/callback`;
+    const redirectUri = `${url.origin}/auth/callback`;
     const scope = 'repo,user';
     
     const githubAuthUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${scope}`;
