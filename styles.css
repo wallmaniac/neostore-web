@@ -2691,7 +2691,6 @@ body {
 
     .hero-content {
         transform: translateY(-12mm);
-        margin-left: -1mm;
     }
 
     .hero-badge {
@@ -2701,6 +2700,7 @@ body {
     .hero-grid {
         grid-template-columns: 1fr;
         gap: 27px;
+        margin-left: -1mm;
     }
 
     .hero-title {
