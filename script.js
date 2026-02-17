@@ -345,15 +345,8 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 const contactForm = document.getElementById('contactForm');
 
 contactForm.addEventListener('submit', async (e) => {
-    // Form will submit to Formspree via action attribute
-    // Show success message after form submission
-    setTimeout(() => {
-        const successMsg = currentLang === 'hr' 
-            ? 'Hvala! Vaša poruka je uspješno poslana. Kontaktirat ćemo Vas uskoro.' 
-            : 'Thank you! Your message has been sent successfully. We will contact you soon.';
-        
-        alert(successMsg);
-    }, 500);
+    // Don't prevent default - let the form submit normally to formsubmit.co
+    // Form submission will work as normal POST request
 });
 // Active navigation link on scroll
 const sections = document.querySelectorAll('.section, .hero');
