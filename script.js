@@ -351,7 +351,7 @@ if (contactForm) {
         const formData = new FormData(contactForm);
         
         try {
-            const response = await fetch('/api/contact', {
+            const response = await fetch('/.netlify/functions/contact', {
                 method: 'POST',
                 body: formData
             });
