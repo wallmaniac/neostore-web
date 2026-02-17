@@ -1,6 +1,18 @@
 export async function onRequest(context) {
   const { request } = context;
 
+  // Handle CORS preflight
+  if (request.method === 'OPTIONS') {
+    return new Response(null, {
+      status: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type'
+      }
+    });
+  }
+
   if (request.method !== 'POST') {
     return new Response('Method not allowed', { status: 405 });
   }
