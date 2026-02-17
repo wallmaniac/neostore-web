@@ -1,9 +1,5 @@
 backend:
-  name: github
-  repo: wallmaniac/neostore-web
-  branch: main
-  base_url: https://neostore-platform.hr
-  auth_endpoint: auth
+  name: test-repo
 
 media_folder: "/"
 public_folder: "/"
