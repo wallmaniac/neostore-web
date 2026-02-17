@@ -38,6 +38,9 @@
                 <button class="lang-btn" data-lang="en" title="English">
                     <img src="https://flagcdn.com/w80/gb.png" alt="English">
                 </button>
+                <button class="dark-mode-toggle" id="darkModeToggle" title="Toggle Dark Mode" aria-label="Toggle Dark Mode">
+                    <i class="fas fa-lightbulb"></i>
+                </button>
             </div>
             <div class="hamburger" id="hamburger">
                 <span></span>
@@ -90,6 +93,9 @@
                 <i class="fas fa-star"></i>
                 <span data-hr="Voditelj u digitalnoj transformaciji" data-en="Leader in Digital Transformation">Voditelj u digitalnoj transformaciji</span>
             </div>
+            <button class="dark-mode-toggle-mobile" id="darkModeToggleMobile" title="Toggle Dark Mode" aria-label="Toggle Dark Mode">
+                <i class="fas fa-lightbulb"></i>
+            </button>
             
             <div class="hero-grid">
                 <div class="hero-left-section">
@@ -417,11 +423,11 @@
                             <p>+385 95 2229994</p>
                         </div>
                     </a>
-                    <a href="mailto:info@neotel-media.hr" class="info-item info-item-link">
+                    <a href="mailto:info@neostore-platform.hr" class="info-item info-item-link">
                         <i class="fas fa-envelope"></i>
                         <div>
                             <h4>Email</h4>
-                            <p>info@neotel-media.hr</p>
+                            <p>info@neostore-platform.hr</p>
                         </div>
                     </a>
                     <div class="info-item">
@@ -433,7 +439,7 @@
                     </div>
                 </div>
 
-                <form class="contact-form neon-glow-card" id="contactForm" data-aos="fade-left">
+                <form class="contact-form neon-glow-card" id="contactForm" action="https://formspree.io/f/info@neostore-platform.hr" method="POST" data-aos="fade-left">
                     <div class="form-group">
                         <input type="text" id="name" name="name" required>
                         <label for="name" data-hr="Ime i prezime" data-en="Full Name">Ime i prezime</label>
@@ -450,6 +456,7 @@
                         <textarea id="message" name="message" rows="5" required></textarea>
                         <label for="message" data-hr="Poruka" data-en="Message">Poruka</label>
                     </div>
+                    <input type="hidden" name="_next" value="https://neostore-platform.hr/">
                     <button type="submit" class="btn btn-primary" data-hr="Pošalji poruku" data-en="Send Message">Pošalji poruku</button>
                 </form>
             </div>
