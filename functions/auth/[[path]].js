@@ -39,10 +39,15 @@ export async function onRequest(context) {
           <body>
             <script>
               (function() {
-                const data = ${tokenData};
+                const authData = ${tokenData};
                 if (window.opener) {
+                  // Send message in the format Decap CMS expects
                   window.opener.postMessage(
-                    'authorization:github:success:' + JSON.stringify(data),
+                    {
+                      type: 'authorization',
+                      provider: authData.provider,
+                      token: authData.token
+                    },
                     '*'
                   );
                 }
