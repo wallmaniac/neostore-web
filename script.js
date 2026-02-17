@@ -353,24 +353,38 @@ if (contactForm) {
         const phone = document.getElementById('phone').value;
         const message = document.getElementById('message').value;
         
-        // Save to localStorage
-        const submissions = JSON.parse(localStorage.getItem('contactSubmissions') || '[]');
-        submissions.push({
-            name,
-            email,
-            phone,
-            message,
-            timestamp: new Date().toISOString()
-        });
-        localStorage.setItem('contactSubmissions', JSON.stringify(submissions));
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('email', email);
+        formData.append('phone', phone);
+        formData.append('message', message);
         
-        // Show success
-        const successMsg = currentLang === 'hr' 
-            ? 'Hvala! Vaša poruka je sačuvana. Kontaktirat ćemo Vas uskoro na ' + email + '.' 
-            : 'Thank you! Your message has been saved. We will contact you soon at ' + email + '.';
-        
-        alert(successMsg);
-        contactForm.reset();
+        try {
+            const response = await fetch('/_functions/contact', {
+                method: 'POST',
+                body: formData
+            });
+            
+            if (response.ok) {
+                const successMsg = currentLang === 'hr' 
+                    ? 'Hvala! Vaša poruka je uspješno poslana. Kontaktirat ćemo Vas uskoro na ' + email + '.' 
+                    : 'Thank you! Your message has been sent successfully. We will contact you soon at ' + email + '.';
+                
+                alert(successMsg);
+                contactForm.reset();
+            } else {
+                const errorMsg = currentLang === 'hr'
+                    ? 'Greška pri slanju poruke. Pokušajte ponovno.'
+                    : 'Error sending message. Please try again.';
+                alert(errorMsg);
+            }
+        } catch (error) {
+            const errorMsg = currentLang === 'hr'
+                ? 'Greška pri slanju poruke. Pokušajte ponovno.'
+                : 'Error sending message. Please try again.';
+            alert(errorMsg);
+            console.error('Form error:', error);
+        }
     });
 }
 // Active navigation link on scroll

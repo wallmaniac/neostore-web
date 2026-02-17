@@ -183,43 +183,50 @@
     </div>
     
     <script>
-        function loadSubmissions() {
-            const submissions = JSON.parse(localStorage.getItem('contactSubmissions') || '[]');
+        async function loadSubmissions() {
             const container = document.getElementById('submissions-container');
             const totalEl = document.getElementById('total');
             
-            totalEl.textContent = submissions.length;
-            
-            if (submissions.length === 0) {
-                container.innerHTML = '<div class="empty-state"><p>Nema poslanih poruka</p></div>';
-                return;
+            try {
+                const response = await fetch('/_functions/submissions-api');
+                const submissions = await response.json();
+                
+                totalEl.textContent = submissions.length;
+                
+                if (!submissions || submissions.length === 0) {
+                    container.innerHTML = '<div class="empty-state"><p>Nema poslanih poruka</p></div>';
+                    return;
+                }
+                
+                container.innerHTML = submissions.map((sub, idx) => {
+                    const date = new Date(sub.timestamp).toLocaleString('hr-HR');
+                    return `
+                        <div class="submission-card">
+                            <div class="submission-header">
+                                <div class="submission-name">${escapeHtml(sub.name)}</div>
+                                <div class="submission-date">${date}</div>
+                            </div>
+                            <div class="submission-info">
+                                <div class="info-row">
+                                    <span class="info-label">📧 Email:</span>
+                                    <span class="info-value"><a href="mailto:${escapeHtml(sub.email)}">${escapeHtml(sub.email)}</a></span>
+                                </div>
+                                <div class="info-row">
+                                    <span class="info-label">📱 Telefon:</span>
+                                    <span class="info-value"><a href="tel:${escapeHtml(sub.phone)}">${escapeHtml(sub.phone)}</a></span>
+                                </div>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">💬 Poruka:</span>
+                            </div>
+                            <div class="message-box">${escapeHtml(sub.message)}</div>
+                        </div>
+                    `;
+                }).join('');
+            } catch (error) {
+                console.error('Error loading submissions:', error);
+                container.innerHTML = '<div class="empty-state"><p>Greška pri učitavanju poruka</p></div>';
             }
-            
-            container.innerHTML = submissions.reverse().map((sub, idx) => {
-                const date = new Date(sub.timestamp).toLocaleString('hr-HR');
-                return `
-                    <div class="submission-card">
-                        <div class="submission-header">
-                            <div class="submission-name">${escapeHtml(sub.name)}</div>
-                            <div class="submission-date">${date}</div>
-                        </div>
-                        <div class="submission-info">
-                            <div class="info-row">
-                                <span class="info-label">📧 Email:</span>
-                                <span class="info-value"><a href="mailto:${escapeHtml(sub.email)}">${escapeHtml(sub.email)}</a></span>
-                            </div>
-                            <div class="info-row">
-                                <span class="info-label">📱 Telefon:</span>
-                                <span class="info-value"><a href="tel:${escapeHtml(sub.phone)}">${escapeHtml(sub.phone)}</a></span>
-                            </div>
-                        </div>
-                        <div class="info-row">
-                            <span class="info-label">💬 Poruka:</span>
-                        </div>
-                        <div class="message-box">${escapeHtml(sub.message)}</div>
-                    </div>
-                `;
-            }).join('');
         }
         
         function escapeHtml(text) {
@@ -229,36 +236,41 @@
         }
         
         function exportAsJSON() {
-            const submissions = JSON.parse(localStorage.getItem('contactSubmissions') || '[]');
-            const dataStr = JSON.stringify(submissions, null, 2);
-            const dataBlob = new Blob([dataStr], { type: 'application/json' });
-            const url = URL.createObjectURL(dataBlob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = `neostore-submissions-${new Date().toISOString().split('T')[0]}.json`;
-            link.click();
+            fetch('/_functions/submissions-api')
+                .then(r => r.json())
+                .then(submissions => {
+                    const dataStr = JSON.stringify(submissions, null, 2);
+                    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+                    const url = URL.createObjectURL(dataBlob);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = `neostore-submissions-${new Date().toISOString().split('T')[0]}.json`;
+                    link.click();
+                });
         }
         
         function exportAsCSV() {
-            const submissions = JSON.parse(localStorage.getItem('contactSubmissions') || '[]');
-            let csv = 'Ime,Email,Telefon,Poruka,Datum\n';
-            csv += submissions.map(sub => 
-                `"${sub.name.replace(/"/g, '""')}","${sub.email}","${sub.phone}","${sub.message.replace(/"/g, '""').replace(/\n/g, ' ')}","${sub.timestamp}"`
-            ).join('\n');
-            
-            const dataBlob = new Blob([csv], { type: 'text/csv' });
-            const url = URL.createObjectURL(dataBlob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = `neostore-submissions-${new Date().toISOString().split('T')[0]}.csv`;
-            link.click();
+            fetch('/_functions/submissions-api')
+                .then(r => r.json())
+                .then(submissions => {
+                    let csv = 'Ime,Email,Telefon,Poruka,Datum\n';
+                    csv += submissions.map(sub => 
+                        `"${sub.name.replace(/"/g, '""')}","${sub.email}","${sub.phone}","${sub.message.replace(/"/g, '""').replace(/\n/g, ' ')}","${sub.timestamp}"`
+                    ).join('\n');
+                    
+                    const dataBlob = new Blob([csv], { type: 'text/csv' });
+                    const url = URL.createObjectURL(dataBlob);
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = `neostore-submissions-${new Date().toISOString().split('T')[0]}.csv`;
+                    link.click();
+                });
         }
         
         function clearAll() {
             if (confirm('Dali ste sigurni? Ovo će obrisati SVE poruke!')) {
-                localStorage.removeItem('contactSubmissions');
-                loadSubmissions();
-                alert('Sve poruke su obrisane');
+                // Note: KV clearing would require a separate DELETE endpoint
+                alert('Za brisanje svih poruka, kontaktirajte administratora');
             }
         }
         

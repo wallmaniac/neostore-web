@@ -29,7 +29,13 @@ export default async (request, context) => {
       message: formData.get('message')
     };
 
-    console.log('Form submission:', submission);
+    // Save to Cloudflare KV
+    const submissionId = `submission-${Date.now()}`;
+    if (context.env && context.env.SUBMISSIONS) {
+      await context.env.SUBMISSIONS.put(submissionId, JSON.stringify(submission));
+    }
+
+    console.log('Form submission saved:', submission);
 
     return new Response(JSON.stringify({ success: true, message: 'Form submitted' }), {
       status: 200,
