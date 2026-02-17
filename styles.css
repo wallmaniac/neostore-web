@@ -2691,6 +2691,7 @@ body {
 
     .hero-content {
         transform: translateY(-12mm);
+        margin-left: -1mm;
     }
 
     .hero-badge {
