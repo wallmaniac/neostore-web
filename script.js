@@ -344,10 +344,9 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 // Contact Form Handling
 const contactForm = document.getElementById('contactForm');
 
-contactForm.addEventListener('submit', async (e) => {
-    // Don't prevent default - let the form submit normally to formsubmit.co
-    // Form submission will work as normal POST request
-});
+if (contactForm) {
+    // Allow normal form submission to FormSubmit
+}
 // Active navigation link on scroll
 const sections = document.querySelectorAll('.section, .hero');
 const navLinks = document.querySelectorAll('.nav-link');
