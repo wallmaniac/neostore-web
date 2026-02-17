@@ -29,7 +29,7 @@ export async function onRequest(context) {
       
       if (data.access_token) {
         // Return HTML that posts the token back to the CMS
-        const messageData = JSON.stringify({ token: data.access_token, provider: 'github' });
+        const tokenData = JSON.stringify({ token: data.access_token, provider: 'github' });
         return new Response(`
           <!DOCTYPE html>
           <html>
@@ -38,12 +38,18 @@ export async function onRequest(context) {
           </head>
           <body>
             <script>
-              const messageData = ${messageData};
-              window.opener.postMessage(
-                'authorization:github:success:' + JSON.stringify(messageData),
-                window.location.origin
-              );
-              window.close();
+              (function() {
+                const data = ${tokenData};
+                if (window.opener) {
+                  window.opener.postMessage(
+                    'authorization:github:success:' + JSON.stringify(data),
+                    '*'
+                  );
+                }
+                setTimeout(function() {
+                  window.close();
+                }, 1000);
+              })();
             </script>
             <p>Authorization successful! This window will close automatically.</p>
           </body>
