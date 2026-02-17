@@ -29,7 +29,6 @@ export async function onRequest(context) {
       
       if (data.access_token) {
         // Return HTML that posts the token back to the CMS
-        const tokenData = JSON.stringify({ token: data.access_token, provider: 'github' });
         return new Response(`
           <!DOCTYPE html>
           <html>
@@ -39,18 +38,22 @@ export async function onRequest(context) {
           <body>
             <script>
               (function() {
-                const authData = ${tokenData};
+                const token = ${JSON.stringify(data.access_token)};
+                const provider = 'github';
+                
+                // Format the message exactly as Netlify's OAuth client does
+                const message = 'authorization:' + provider + ':success:' + JSON.stringify({
+                  token: token,
+                  provider: provider
+                });
+                
+                console.log('Sending auth message:', message);
+                
                 if (window.opener) {
-                  // Send message in the format Decap CMS expects
-                  window.opener.postMessage(
-                    {
-                      type: 'authorization',
-                      provider: authData.provider,
-                      token: authData.token
-                    },
-                    '*'
-                  );
+                  window.opener.postMessage(message, '*');
+                  console.log('Message sent to opener');
                 }
+                
                 setTimeout(function() {
                   window.close();
                 }, 1000);

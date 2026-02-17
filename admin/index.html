@@ -4,6 +4,13 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Content Manager</title>
+  <script>
+    // Debug: Log all postMessage events
+    window.addEventListener('message', function(e) {
+      console.log('Received message:', e.data);
+      console.log('Message origin:', e.origin);
+    }, false);
+  </script>
 </head>
 <body>
   <!-- Include the Decap CMS script -->
