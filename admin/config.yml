@@ -1,6 +1,9 @@
 backend:
-  name: git-gateway
+  name: github
+  repo: wallmaniac/neostore-web
   branch: main
+  base_url: https://neostore-platform.hr
+  auth_endpoint: /auth
 
 media_folder: "/"
 public_folder: "/"
