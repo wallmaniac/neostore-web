@@ -2634,18 +2634,18 @@ body {
         height: 40px;
         max-width: 180px;
         transition: none;
-        transform: translateX(5mm);
+        transform: translateX(4mm);
         filter: none;
         animation: none;
     }
 
     .nav-logo-img:active {
         animation: none;
-        transform: translateX(5mm);
+        transform: translateX(4mm);
     }
 
     .nav-logo-img:hover {
-        transform: translateX(5mm);
+        transform: translateX(4mm);
         filter: none;
     }
 
