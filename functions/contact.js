@@ -1,20 +1,21 @@
-export async function onRequest(context) {
-  const { request } = context;
-
+export default async (request, context) => {
   // Handle CORS preflight
   if (request.method === 'OPTIONS') {
     return new Response(null, {
       status: 200,
       headers: {
         'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'POST, OPTIONS',
+        'Access-Control-Allow-Methods': 'POST, OPTIONS, GET',
         'Access-Control-Allow-Headers': 'Content-Type'
       }
     });
   }
 
   if (request.method !== 'POST') {
-    return new Response('Method not allowed', { status: 405 });
+    return new Response(JSON.stringify({ error: 'Method not allowed' }), { 
+      status: 405,
+      headers: { 'Content-Type': 'application/json' }
+    });
   }
 
   try {
@@ -28,11 +29,9 @@ export async function onRequest(context) {
       message: formData.get('message')
     };
 
-    // Log to console (visible in Cloudflare dashboard)
-    console.log('Form submission received:', submission);
+    console.log('Form submission:', submission);
 
-    // Return success without redirect
-    return new Response(JSON.stringify({ success: true, message: 'Form submitted successfully' }), {
+    return new Response(JSON.stringify({ success: true, message: 'Form submitted' }), {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
@@ -40,8 +39,8 @@ export async function onRequest(context) {
       }
     });
   } catch (error) {
-    console.error('Error processing form:', error);
-    return new Response(JSON.stringify({ success: false, error: 'Error processing form' }), {
+    console.error('Form error:', error);
+    return new Response(JSON.stringify({ success: false, error: error.message }), {
       status: 500,
       headers: {
         'Content-Type': 'application/json',
@@ -49,4 +48,4 @@ export async function onRequest(context) {
       }
     });
   }
-}
+};
