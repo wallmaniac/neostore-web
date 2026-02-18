@@ -344,25 +344,31 @@ body {
 /* Dark Mode Toggle */
 .dark-mode-toggle {
     position: fixed;
-    top: 22px;
-    right: 15px;
-    background: rgba(0, 0, 0, 0.8);
+    top: 22px !important;
+    right: 15px !important;
+    background: rgba(0, 0, 0, 0.8) !important;
     backdrop-filter: blur(10px);
-    border: 2px solid rgba(0, 168, 255, 0.6);
-    border-radius: 50%;
-    width: 48px;
-    height: 48px;
+    border: 2px solid rgba(0, 168, 255, 0.6) !important;
+    border-radius: 50% !important;
+    width: 48px !important;
+    height: 48px !important;
     cursor: pointer;
     transition: all 0.3s ease;
-    padding: 0;
-    display: flex;
+    padding: 0 !important;
+    display: flex !important;
     align-items: center;
     justify-content: center;
-    color: rgba(255, 255, 255, 0.95);
-    font-size: 24px;
-    z-index: 99999;
+    color: rgba(255, 255, 255, 0.95) !important;
+    font-size: 24px !important;
+    z-index: 99999 !important;
     box-shadow: 0 4px 20px rgba(0, 168, 255, 0.5);
-    margin: 0;
+    margin: 0 !important;
+    pointer-events: auto !important;
+    will-change: transform;
+    line-height: 1 !important;
+    min-width: 48px;
+    min-height: 48px;
+    touch-action: manipulation;
 }
 
 .dark-mode-toggle:hover {
