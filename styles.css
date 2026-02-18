@@ -3152,6 +3152,13 @@ body.dark-mode .dark-mode-toggle:hover {
     }
 }
 
+/* Mobile hero card additional move up */
+@media (max-width: 800px) {
+    .hero-steps-card {
+        transform: translateY(-7mm);
+    }
+}
+
 /* Futuristic Space Animation for Hero Text */
 @keyframes spaceWarp {
     0% {
