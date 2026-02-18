@@ -343,31 +343,58 @@ body {
 
 /* Dark Mode Toggle */
 .dark-mode-toggle {
-    background: transparent;
-    border: 2px solid var(--gray);
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.2);
     border-radius: 50%;
-    width: 38.4px;
-    height: 38.4px;
+    width: 50px;
+    height: 50px;
     cursor: pointer;
     transition: all 0.3s ease;
-    padding: 8px;
+    padding: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     color: rgba(255, 255, 255, 0.9);
-    font-size: 20px;
-    margin-left: 10px;
+    font-size: 22px;
+    z-index: 9999;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
 .dark-mode-toggle:hover {
-    border-color: var(--primary-blue);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);
+    border-color: var(--accent-blue);
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(0, 168, 255, 0.4);
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.dark-mode-toggle:active {
+    transform: scale(0.95);
 }
 
 body.dark-mode .dark-mode-toggle {
-    border-color: var(--accent-blue);
-    background: rgba(0, 168, 255, 0.1);
+    border-color: rgba(0, 168, 255, 0.5);
+    background: rgba(30, 41, 59, 0.9);
+    box-shadow: 0 4px 15px rgba(0, 168, 255, 0.3);
+}
+
+body.dark-mode .dark-mode-toggle:hover {
+    background: rgba(30, 41, 59, 1);
+    box-shadow: 0 6px 20px rgba(0, 168, 255, 0.5);
+}
+
+/* Mobile adjustments for dark mode toggle */
+@media (max-width: 800px) {
+    .dark-mode-toggle {
+        top: 70px;
+        right: 15px;
+        width: 45px;
+        height: 45px;
+        font-size: 20px;
+    }
 }
 
 .hamburger {
