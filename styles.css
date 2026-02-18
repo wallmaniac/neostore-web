@@ -2749,21 +2749,28 @@ body.dark-mode .dark-mode-toggle:hover {
         height: 40px;
         max-width: 180px;
         transition: none;
-        transform: translateX(4mm);
+        transform: translateX(6mm);
         filter: none;
         animation: none;
     }
 
     .nav-logo-img:active {
         animation: none;
-        transform: translateX(4mm);
+        transform: translateX(6mm);
     }
 
     .nav-logo-img:hover {
-        transform: translateX(4mm);
+        transform: translateX(6mm);
         filter: none;
     }
 
+
+@media (max-width: 1024px) {
+    .dark-mode-toggle:hover,
+    .dark-mode-toggle:active {
+        transform: none;
+    }
+}
     .language-switcher {
         z-index: 10002;
         order: 3;
