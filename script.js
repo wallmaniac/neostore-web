@@ -342,8 +342,64 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Contact Form Handling - Disabled
-// Form submission functionality has been removed
+// Initialize EmailJS
+(function() {
+    emailjs.init({
+        publicKey: "56HEWr_JbUhT-R4Fa",
+    });
+})();
+
+// Contact Form Handling with EmailJS
+const contactForm = document.getElementById('contactForm');
+
+if (contactForm) {
+    contactForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const submitBtn = contactForm.querySelector('button[type="submit"]');
+        const originalText = submitBtn.textContent;
+        const loadingText = currentLang === 'hr' ? 'Šalje se...' : 'Sending...';
+        
+        // Disable button and show loading state
+        submitBtn.disabled = true;
+        submitBtn.textContent = loadingText;
+        
+        // Prepare template parameters
+        const templateParams = {
+            from_name: document.getElementById('name').value,
+            from_email: document.getElementById('email').value,
+            phone: document.getElementById('phone').value,
+            message: document.getElementById('message').value,
+            to_email: 'info@neostore-platform.hr'
+        };
+        
+        try {
+            // Send email using EmailJS
+            await emailjs.send(
+                'submit form neostore',
+                'template_vsx46114',
+                templateParams
+            );
+            
+            const successMsg = currentLang === 'hr' 
+                ? 'Hvala! Vaša poruka je uspješno poslana. Kontaktirat ćemo Vas uskoro.' 
+                : 'Thank you! Your message has been sent successfully. We will contact you soon.';
+            
+            alert(successMsg);
+            contactForm.reset();
+        } catch (error) {
+            console.error('EmailJS Error:', error);
+            const errorMsg = currentLang === 'hr'
+                ? 'Greška pri slanju poruke. Molimo pokušajte ponovno ili nas kontaktirajte direktno.'
+                : 'Error sending message. Please try again or contact us directly.';
+            alert(errorMsg);
+        } finally {
+            // Re-enable button
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalText;
+        }
+    });
+}
 
 // Active navigation link on scroll
 const sections = document.querySelectorAll('.section, .hero');
