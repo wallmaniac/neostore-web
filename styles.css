@@ -2215,6 +2215,26 @@ body.dark-mode .dark-mode-toggle:hover {
     display: flex;
     gap: 20px;
     align-items: flex-start;
+    text-decoration: none;
+    color: var(--primary-blue);
+    transition: all 0.3s ease;
+    padding: 12px 15px;
+    border-radius: 10px;
+    margin: -12px -15px;
+    cursor: pointer;
+    border-left: 3px solid transparent;
+    border-bottom: 2px solid rgba(0, 102, 204, 0.2);
+}
+
+.info-item:hover {
+    background: rgba(0, 102, 204, 0.1);
+    transform: translateX(8px);
+    border-left-color: var(--primary-blue);
+    border-bottom-color: var(--primary-blue);
+}
+
+.info-item:active {
+    transform: translateX(5px);
 }
 
 .info-item-link {
@@ -2361,7 +2381,7 @@ body.dark-mode .dark-mode-toggle:hover {
     color: var(--dark-gray);
     transition: all 0.3s ease;
     pointer-events: none;
-    background: var(--white);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(240, 248, 255, 0.95) 100%);
     padding: 0 5px;
 }
 
@@ -3031,6 +3051,8 @@ body.dark-mode .dark-mode-toggle:hover {
         border-radius: 15px;
         overflow: hidden;
         height: 400px;
+        border: 2px solid rgba(0, 168, 255, 0.3);
+        box-shadow: 0 0 14px rgba(100, 170, 255, 0.2);
     }
 
     .map-container-mobile iframe {
@@ -3428,12 +3450,19 @@ body.dark-mode .contact-form textarea:focus {
 
 body.dark-mode .contact-form label {
     color: var(--text-secondary);
+    background: rgba(30, 41, 59, 0.9);
 }
 
 /* Info items in dark mode */
 body.dark-mode .info-item {
-    background: var(--card-bg);
-    border-color: rgba(148, 163, 184, 0.2);
+    color: var(--accent-blue);
+    border-bottom-color: rgba(0, 168, 255, 0.3);
+}
+
+body.dark-mode .info-item:hover {
+    background: rgba(0, 168, 255, 0.1);
+    border-left-color: var(--accent-blue);
+    border-bottom-color: var(--accent-blue);
 }
 
 body.dark-mode .info-item h4 {
@@ -3448,9 +3477,15 @@ body.dark-mode .info-item i {
     color: var(--accent-blue);
 }
 
+body.dark-mode .info-item-link {
+    color: var(--accent-blue);
+    border-bottom-color: rgba(0, 168, 255, 0.3);
+}
+
 body.dark-mode .info-item-link:hover {
-    background: rgba(59, 130, 246, 0.1);
-    border-color: var(--accent-blue);
+    background: rgba(0, 168, 255, 0.1);
+    border-left-color: var(--accent-blue);
+    border-bottom-color: var(--accent-blue);
 }
 
 /* Buttons in dark mode */
@@ -3463,6 +3498,11 @@ body.dark-mode .btn-primary {
 body.dark-mode .btn-primary:hover {
     box-shadow: 0 6px 25px rgba(0, 168, 255, 0.5);
     transform: translateY(-2px);
+}
+
+body.dark-mode .map-container-mobile {
+    border-color: rgba(0, 168, 255, 0.4);
+    box-shadow: 0 0 14px rgba(0, 168, 255, 0.25);
 }
 
 body.dark-mode .btn-secondary {
