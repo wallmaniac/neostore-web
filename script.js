@@ -377,7 +377,7 @@ if (contactForm) {
             // Send email using EmailJS
             await emailjs.send(
                 'service_neostore',
-                'template_vsx46114',
+                'template_neostore',
                 templateParams
             );
             
