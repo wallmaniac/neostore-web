@@ -342,52 +342,9 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Contact Form Handling
-const contactForm = document.getElementById('contactForm');
+// Contact Form Handling - Disabled
+// Form submission functionality has been removed
 
-if (contactForm) {
-    contactForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        
-        const name = document.getElementById('name').value;
-        const email = document.getElementById('email').value;
-        const phone = document.getElementById('phone').value;
-        const message = document.getElementById('message').value;
-        
-        const formData = new FormData();
-        formData.append('name', name);
-        formData.append('email', email);
-        formData.append('phone', phone);
-        formData.append('message', message);
-        
-        try {
-            const response = await fetch('/contact', {
-                method: 'POST',
-                body: formData
-            });
-            
-            if (response.ok) {
-                const successMsg = currentLang === 'hr' 
-                    ? 'Hvala! Vaša poruka je uspješno poslana. Kontaktirat ćemo Vas uskoro na ' + email + '.' 
-                    : 'Thank you! Your message has been sent successfully. We will contact you soon at ' + email + '.';
-                
-                alert(successMsg);
-                contactForm.reset();
-            } else {
-                const errorMsg = currentLang === 'hr'
-                    ? 'Greška pri slanju poruke. Pokušajte ponovno.'
-                    : 'Error sending message. Please try again.';
-                alert(errorMsg);
-            }
-        } catch (error) {
-            const errorMsg = currentLang === 'hr'
-                ? 'Greška pri slanju poruke. Pokušajte ponovno.'
-                : 'Error sending message. Please try again.';
-            alert(errorMsg);
-            console.error('Form error:', error);
-        }
-    });
-}
 // Active navigation link on scroll
 const sections = document.querySelectorAll('.section, .hero');
 const navLinks = document.querySelectorAll('.nav-link');
