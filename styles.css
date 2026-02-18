@@ -407,7 +407,7 @@ body.dark-mode .dark-mode-toggle:hover {
     .dark-mode-toggle-mobile {
         display: flex !important;
         position: fixed;
-        top: 62px;
+        top: 56px;
         right: 7px;
         z-index: 9999;
         width: 36px;
