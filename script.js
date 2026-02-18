@@ -53,9 +53,9 @@ if (window.innerWidth > 1024) {
         }
     }
     
-    // Check for saved dark mode preference
+    // Check for saved dark mode preference, default to dark mode
     const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') {
+    if (savedTheme !== 'light') {
         body.classList.add('dark-mode');
         if (darkModeToggle) {
             const icon = darkModeToggle.querySelector('i');

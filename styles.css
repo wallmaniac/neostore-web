@@ -3324,18 +3324,46 @@ body.dark-mode {
 
 /* Section backgrounds in dark mode */
 body.dark-mode .section {
-    background-color: var(--bg-secondary);
+    position: relative;
+    overflow: hidden;
+    background: radial-gradient(circle at 20% 20%, rgba(99,102,241,0.12), transparent 35%),
+                radial-gradient(circle at 80% 30%, rgba(30,144,255,0.10), transparent 40%),
+                linear-gradient(180deg, #0a0e15 0%, #0c1018 50%, #09101a 100%);
     border-bottom-color: var(--border-color);
 }
 
+body.dark-mode .section::before {
+    content: '';
+    position: absolute;
+    inset: -20%;
+    background: conic-gradient(from 120deg, rgba(99,102,241,0.12), rgba(30,144,255,0.08), rgba(99,102,241,0.12));
+    filter: blur(60px);
+    opacity: 0.3;
+    animation: hero-aurora 18s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 0;
+}
+
+body.dark-mode .section > * {
+    position: relative;
+    z-index: 1;
+}
+
 body.dark-mode .section-alt {
-    background-color: var(--bg-primary);
+    background: radial-gradient(circle at 20% 20%, rgba(99,102,241,0.12), transparent 35%),
+                radial-gradient(circle at 80% 30%, rgba(30,144,255,0.10), transparent 40%),
+                linear-gradient(180deg, #0a0e15 0%, #0c1018 50%, #09101a 100%);
 }
 
 /* Navbar in dark mode */
 body.dark-mode .navbar {
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-    border-bottom-color: rgba(148, 163, 184, 0.2);
+    background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+    backdrop-filter: blur(10px);
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .navbar.scrolled {
+    opacity: 0.85;
 }
 
 /* Cards in dark mode */
@@ -3360,9 +3388,16 @@ body.dark-mode .feature-card:hover {
 
 body.dark-mode .service-card h3,
 body.dark-mode .feature-card h3,
-body.dark-mode .section-title,
 body.dark-mode h1, body.dark-mode h2, body.dark-mode h3, body.dark-mode h4 {
     color: var(--text-primary);
+}
+
+body.dark-mode .section-title {
+    background: linear-gradient(135deg, #00d9ff 0%, #4d94ff 50%, #a855f7 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    background-size: 200% auto;
 }
 
 body.dark-mode .service-card p,
