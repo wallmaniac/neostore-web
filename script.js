@@ -7,6 +7,37 @@ if (window.innerWidth > 1024) {
     });
 }
 
+// Dark Mode Functionality
+(function() {
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const body = document.body;
+    const icon = darkModeToggle.querySelector('i');
+    
+    // Check for saved dark mode preference or default to light mode
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+        body.classList.add('dark-mode');
+        icon.classList.remove('fa-moon');
+        icon.classList.add('fa-sun');
+    }
+    
+    // Toggle dark mode
+    darkModeToggle.addEventListener('click', () => {
+        body.classList.toggle('dark-mode');
+        
+        // Update icon
+        if (body.classList.contains('dark-mode')) {
+            icon.classList.remove('fa-moon');
+            icon.classList.add('fa-sun');
+            localStorage.setItem('theme', 'dark');
+        } else {
+            icon.classList.remove('fa-sun');
+            icon.classList.add('fa-moon');
+            localStorage.setItem('theme', 'light');
+        }
+    });
+})();
+
 // Ensure AOS elements are visible on mobile (AOS disabled)
 function ensureAOSVisibility() {
     if (window.innerWidth <= 1024) {
