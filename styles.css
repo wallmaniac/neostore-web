@@ -356,10 +356,6 @@ body {
     justify-content: center;
     color: rgba(255, 255, 255, 0.9);
     font-size: 20px;
-    position: fixed;
-    top: 80px;
-    right: 20px;
-    z-index: 9999;
     -webkit-appearance: none;
     appearance: none;
     -webkit-box-sizing: border-box;
@@ -394,14 +390,18 @@ body.dark-mode .dark-mode-toggle:hover {
     box-shadow: 0 4px 12px rgba(0, 168, 255, 0.4);
 }
 
+/* Mobile: Move to top right corner */
 @media (max-width: 800px) {
     .dark-mode-toggle {
+        position: fixed;
         top: 70px;
         right: 15px;
+        z-index: 9999;
         width: 36px;
         height: 36px;
         padding: 6px;
         font-size: 18px;
+        margin: 0 !important;
     }
 }
 
