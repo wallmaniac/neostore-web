@@ -356,6 +356,7 @@ body {
     justify-content: center;
     color: rgba(255, 255, 255, 0.9);
     font-size: 20px;
+    margin-left: 10px;
     -webkit-appearance: none;
     appearance: none;
     -webkit-box-sizing: border-box;
@@ -367,6 +368,7 @@ body {
     -webkit-user-select: none;
     -moz-user-select: none;
     user-select: none;
+    outline: none;
 }
 
 .dark-mode-toggle:hover {
@@ -390,18 +392,70 @@ body.dark-mode .dark-mode-toggle:hover {
     box-shadow: 0 4px 12px rgba(0, 168, 255, 0.4);
 }
 
-/* Mobile: Move to top right corner */
 @media (max-width: 800px) {
     .dark-mode-toggle {
+        display: none !important;
+    }
+}
+
+/* Dark Mode Toggle - Mobile Hero Version */
+.dark-mode-toggle-mobile {
+    display: none;
+}
+
+@media (max-width: 800px) {
+    .dark-mode-toggle-mobile {
+        display: flex !important;
         position: fixed;
         top: 70px;
         right: 15px;
         z-index: 9999;
         width: 36px;
         height: 36px;
-        padding: 6px;
-        font-size: 18px;
-        margin: 0 !important;
+        padding: 6px !important;
+        font-size: 18px !important;
+        background: transparent !important;
+        border: 2px solid var(--gray) !important;
+        border-radius: 50% !important;
+        cursor: pointer;
+        align-items: center;
+        justify-content: center;
+        color: rgba(255, 255, 255, 0.9) !important;
+        transition: all 0.3s ease;
+        -webkit-appearance: none !important;
+        appearance: none !important;
+        box-sizing: border-box !important;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+        font-weight: 400 !important;
+        line-height: 1 !important;
+        -webkit-user-select: none !important;
+        -moz-user-select: none !important;
+        user-select: none !important;
+        outline: none !important;
+        box-shadow: none !important;
+        border-collapse: separate;
+        margin: 0;
+    }
+
+    .dark-mode-toggle-mobile:hover {
+        border-color: var(--primary-blue) !important;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3) !important;
+    }
+
+    .dark-mode-toggle-mobile:active {
+        transform: translateY(0);
+    }
+
+    body.dark-mode .dark-mode-toggle-mobile {
+        border-color: var(--accent-blue) !important;
+        background: rgba(0, 168, 255, 0.1) !important;
+        color: var(--accent-blue) !important;
+    }
+
+    body.dark-mode .dark-mode-toggle-mobile:hover {
+        border-color: var(--accent-blue) !important;
+        box-shadow: 0 4px 12px rgba(0, 168, 255, 0.4) !important;
     }
 }
 

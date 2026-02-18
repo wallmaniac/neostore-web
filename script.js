@@ -10,32 +10,76 @@ if (window.innerWidth > 1024) {
 // Dark Mode Functionality
 (function() {
     const darkModeToggle = document.getElementById('darkModeToggle');
+    const darkModeToggleMobile = document.getElementById('darkModeToggleMobile');
     const body = document.body;
-    const icon = darkModeToggle.querySelector('i');
     
-    // Check for saved dark mode preference or default to light mode
+    // Function to toggle dark mode
+    function toggleDarkMode() {
+        body.classList.toggle('dark-mode');
+        
+        // Update icons for both buttons
+        if (body.classList.contains('dark-mode')) {
+            if (darkModeToggle) {
+                const icon = darkModeToggle.querySelector('i');
+                if (icon) {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                }
+            }
+            if (darkModeToggleMobile) {
+                const icon = darkModeToggleMobile.querySelector('i');
+                if (icon) {
+                    icon.classList.remove('fa-moon');
+                    icon.classList.add('fa-sun');
+                }
+            }
+            localStorage.setItem('theme', 'dark');
+        } else {
+            if (darkModeToggle) {
+                const icon = darkModeToggle.querySelector('i');
+                if (icon) {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+            }
+            if (darkModeToggleMobile) {
+                const icon = darkModeToggleMobile.querySelector('i');
+                if (icon) {
+                    icon.classList.remove('fa-sun');
+                    icon.classList.add('fa-moon');
+                }
+            }
+            localStorage.setItem('theme', 'light');
+        }
+    }
+    
+    // Check for saved dark mode preference
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'dark') {
         body.classList.add('dark-mode');
-        icon.classList.remove('fa-moon');
-        icon.classList.add('fa-sun');
+        if (darkModeToggle) {
+            const icon = darkModeToggle.querySelector('i');
+            if (icon) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            }
+        }
+        if (darkModeToggleMobile) {
+            const icon = darkModeToggleMobile.querySelector('i');
+            if (icon) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            }
+        }
     }
     
-    // Toggle dark mode
-    darkModeToggle.addEventListener('click', () => {
-        body.classList.toggle('dark-mode');
-        
-        // Update icon
-        if (body.classList.contains('dark-mode')) {
-            icon.classList.remove('fa-moon');
-            icon.classList.add('fa-sun');
-            localStorage.setItem('theme', 'dark');
-        } else {
-            icon.classList.remove('fa-sun');
-            icon.classList.add('fa-moon');
-            localStorage.setItem('theme', 'light');
-        }
-    });
+    // Add click listeners to both buttons
+    if (darkModeToggle) {
+        darkModeToggle.addEventListener('click', toggleDarkMode);
+    }
+    if (darkModeToggleMobile) {
+        darkModeToggleMobile.addEventListener('click', toggleDarkMode);
+    }
 })();
 
 // Ensure AOS elements are visible on mobile (AOS disabled)
