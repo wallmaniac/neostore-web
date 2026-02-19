@@ -234,7 +234,7 @@ function initHeroSteps() {
         if (heroStepAutoTimer) {
             clearInterval(heroStepAutoTimer);
         }
-        heroStepAutoTimer = setInterval(moveNextStep, 8000);
+        heroStepAutoTimer = setInterval(moveNextStep, 10000);
     };
 
     const stopAutoAdvance = () => {
