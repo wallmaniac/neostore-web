@@ -618,7 +618,7 @@ window.addEventListener('load', () => {
     
     // Allow users to set API token (optional)
     window.setHFToken = function(token) {
-        localStorage.setItem('hf_token', token);
+        localStorage.setItem('hf_api_token', token);
         alert('HuggingFace token updated! Refresh the page for real AI responses.');
     };
     
