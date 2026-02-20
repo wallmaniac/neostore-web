@@ -841,12 +841,10 @@ Neotel offers professional Web Design services tailored to your needs!`
         
         async function getHuggingFaceResponse(userMessage) {
             const isEn = currentLang === 'en';
-            const language = isEn ? 'English' : 'Croatian';
 
             try {
-                // Call our backend proxy instead of HuggingFace directly
-                // This avoids CORS issues
-                const response = await fetch('/.netlify/functions/ai-chat', {
+                // Call our Cloudflare Pages function
+                const response = await fetch('/ai-chat', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -858,27 +856,27 @@ Neotel offers professional Web Design services tailored to your needs!`
                 });
 
                 if (!response.ok) {
-                    console.error('AI Proxy error:', response.status);
+                    console.error('AI API error:', response.status);
                     return isEn 
-                        ? 'AI service is loading. Please try again in a moment.'
-                        : 'AI servis se učitava. Pokušajte ponovno za trenutak.';
+                        ? 'AI service temporarily unavailable. Using knowledge base instead.'
+                        : 'AI servis privremeno nedostupan. Koristim bazu znanja.';
                 }
 
                 const data = await response.json();
                 
                 if (data.error) {
-                    console.error('AI API error:', data.error);
+                    console.error('API returned error:', data.error);
                     return isEn
-                        ? 'AI service temporarily unavailable. Using knowledge base instead.'
-                        : 'AI servis privremeno nedostupan. Koristim bazu znanja.';
+                        ? 'AI service error. Using knowledge base instead.'
+                        : 'Greška AI servisa. Koristim bazu znanja.';
                 }
                 
                 return data.response || (isEn ? 'Unable to generate response' : 'Nije moguće generirati odgovor');
             } catch (error) {
-                console.error('AI proxy call failed:', error);
+                console.error('AI request failed:', error);
                 return isEn 
-                    ? 'Connection error. Please try again.'
-                    : 'Greška pri povezivanju. Pokušajte ponovno.';
+                    ? 'Connection error. Using knowledge base instead.'
+                    : 'Greška pri povezivanju. Koristim bazu znanja.';
             }
         }
         

@@ -1,137 +1,136 @@
 /**
- * AI Chat Proxy - Forwards HuggingFace API requests from browser
- * This bypasses CORS issues by proxying through the server
+ * AI Chat API for Cloudflare Pages
+ * Handles HuggingFace API requests from the browser
  */
 
-const fetch = require('node-fetch');
-
-exports.handler = async (event, context) => {
-    // Set CORS headers to allow browser requests
-    const headers = {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type',
-        'Content-Type': 'application/json'
-    };
-
-    // Handle preflight requests
-    if (event.httpMethod === 'OPTIONS') {
-        return {
-            statusCode: 200,
-            headers,
-            body: ''
+export default {
+    async fetch(request, env, ctx) {
+        // Set CORS headers
+        const headers = {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Content-Type': 'application/json'
         };
-    }
 
-    try {
-        // Parse incoming request
-        const body = JSON.parse(event.body);
-        const { message, language = 'en' } = body;
-
-        if (!message) {
-            return {
-                statusCode: 400,
-                headers,
-                body: JSON.stringify({ error: 'Message is required' })
-            };
+        // Handle preflight
+        if (request.method === 'OPTIONS') {
+            return new Response('', { status: 200, headers });
         }
 
-        // Get HF token from environment or return error
-        const HF_TOKEN = process.env.HUGGING_FACE_TOKEN;
-        if (!HF_TOKEN) {
-            return {
-                statusCode: 500,
-                headers,
-                body: JSON.stringify({ error: 'AI service not configured' })
-            };
+        // Only accept POST
+        if (request.method !== 'POST') {
+            return new Response(
+                JSON.stringify({ error: 'Method not allowed' }),
+                { status: 405, headers }
+            );
         }
 
-        // Build the prompt
-        const neotelContext = `You are an intelligent assistant for Neostore, a leading digital transformation company in Croatia.
+        try {
+            const body = await request.json();
+            const { message = '', language = 'en' } = body;
 
-NEOSTORE SERVICES:
-1. Web Design - responsive websites, e-commerce, CMS, custom applications
-2. AI Solutions - automation, data analytics, team training
-3. Telecommunications - mobile services, internet, device financing, insurance, 24/7 support
-4. Business Planning - financing programs (HAMAG-BICRO, HBOR), business consulting
-
-NEOSTORE CONTACT:
-- Phone: +385 95 2229994
-- Email: info@neostore-platform.hr
-- Address: Alberta Ognjana Štrige 7, 10000 Zagreb, Croatia
-- Hours: Monday-Friday 09:00-17:00 (24/7 for telecom)
-
-Respond in ${language === 'en' ? 'English' : 'Croatian'} only. Be helpful and professional.`;
-
-        const prompt = `${neotelContext}\n\nUser: ${message}\nAssistant:`;
-
-        // Call HuggingFace API
-        const response = await fetch(
-            'https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.2',
-            {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${HF_TOKEN}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    inputs: prompt,
-                    parameters: {
-                        max_new_tokens: 512,
-                        temperature: 0.7,
-                        top_p: 0.9
-                    }
-                })
+            if (!message) {
+                return new Response(
+                    JSON.stringify({ error: 'Message is required' }),
+                    { status: 400, headers }
+                );
             }
-        );
 
-        if (!response.ok) {
-            const errorText = await response.text();
-            console.error(`HF API Error: ${response.status}`, errorText);
-            
-            return {
-                statusCode: response.status,
-                headers,
-                body: JSON.stringify({ 
-                    error: 'AI service error',
-                    details: errorText 
-                })
-            };
+            // Get token from environment variable
+            const HF_TOKEN = env.HUGGING_FACE_TOKEN;
+            if (!HF_TOKEN) {
+                console.error('HUGGING_FACE_TOKEN not configured');
+                return new Response(
+                    JSON.stringify({ error: 'AI service not configured' }),
+                    { status: 500, headers }
+                );
+            }
+
+            // Build the prompt
+            const systemPrompt = `You are an intelligent assistant for Neostore, a leading digital transformation company in Croatia.
+
+SERVICES:
+1. Web Design - responsive websites, e-commerce, CMS
+2. AI Solutions - automation, analytics, training
+3. Telecommunications - mobile, internet, financing
+4. Business Planning - financing programs, consulting
+
+CONTACT: +385 95 2229994, info@neostore-platform.hr
+ADDRESS: Alberta Ognjana Štrige 7, 10000 Zagreb
+HOURS: Mon-Fri 09:00-17:00 (24/7 for telecom)
+
+FINANCING: HAMAG-BICRO grants, HBOR loans, Self-employment support
+
+Respond in ${language === 'en' ? 'English' : 'Croatian'}. Be helpful and professional.`;
+
+            const userPrompt = `${systemPrompt}\n\nUser: ${message}\n\nAssistant:`;
+
+            // Call HuggingFace API
+            const hfResponse = await fetch(
+                'https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.2',
+                {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${HF_TOKEN}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        inputs: userPrompt,
+                        parameters: {
+                            max_new_tokens: 512,
+                            temperature: 0.7,
+                            top_p: 0.9
+                        }
+                    })
+                }
+            );
+
+            if (!hfResponse.ok) {
+                const errorText = await hfResponse.text();
+                console.error(`HF API Error ${hfResponse.status}:`, errorText);
+                
+                return new Response(
+                    JSON.stringify({ 
+                        error: 'HuggingFace API error',
+                        status: hfResponse.status
+                    }),
+                    { status: 502, headers }
+                );
+            }
+
+            const data = await hfResponse.json();
+
+            // Extract response
+            let response = '';
+            if (Array.isArray(data) && data[0]) {
+                response = data[0].generated_text || '';
+            } else if (data.generated_text) {
+                response = data.generated_text;
+            }
+
+            // Clean up
+            if (response.includes('Assistant:')) {
+                response = response.split('Assistant:')[1].trim();
+            }
+
+            return new Response(
+                JSON.stringify({ 
+                    response: response || 'Unable to generate response',
+                    success: true
+                }),
+                { status: 200, headers }
+            );
+
+        } catch (error) {
+            console.error('AI API Error:', error);
+            return new Response(
+                JSON.stringify({ 
+                    error: 'Internal error',
+                    message: error.message
+                }),
+                { status: 500, headers }
+            );
         }
-
-        const data = await response.json();
-
-        // Extract response text
-        let aiResponse = '';
-        if (Array.isArray(data)) {
-            aiResponse = data[0]?.generated_text || '';
-        } else {
-            aiResponse = data.generated_text || '';
-        }
-
-        // Clean up the response
-        if (aiResponse.includes('Assistant:')) {
-            aiResponse = aiResponse.split('Assistant:')[1].trim();
-        }
-
-        return {
-            statusCode: 200,
-            headers,
-            body: JSON.stringify({ 
-                response: aiResponse || 'Unable to generate response',
-                success: true
-            })
-        };
-
-    } catch (error) {
-        console.error('AI Chat Error:', error);
-        return {
-            statusCode: 500,
-            headers,
-            body: JSON.stringify({ 
-                error: 'Internal server error',
-                message: error.message 
-            })
-        };
     }
 };
