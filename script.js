@@ -1,11 +1,4 @@
-// Initialize AOS (Animate On Scroll) - Disabled on mobile
-if (window.innerWidth > 1024) {
-    AOS.init({
-        duration: 800,
-        once: true,
-        offset: 100
-    });
-}
+// Disable AOS so sections render immediately without scroll-based delays.
 
 // Dark Mode Functionality
 (function() {
@@ -82,19 +75,17 @@ if (window.innerWidth > 1024) {
     }
 })();
 
-// Ensure AOS elements are visible on mobile (AOS disabled)
+// Ensure AOS elements are visible on all viewports.
 function ensureAOSVisibility() {
-    if (window.innerWidth <= 1024) {
-        document.querySelectorAll('[data-aos]').forEach((el) => {
-            el.classList.add('aos-animate');
-            el.style.opacity = '1';
-            el.style.transform = 'none';
-            el.style.visibility = 'visible';
-            el.removeAttribute('data-aos');
-            el.removeAttribute('data-aos-delay');
-            el.removeAttribute('data-aos-duration');
-        });
-    }
+    document.querySelectorAll('[data-aos]').forEach((el) => {
+        el.classList.add('aos-animate');
+        el.style.opacity = '1';
+        el.style.transform = 'none';
+        el.style.visibility = 'visible';
+        el.removeAttribute('data-aos');
+        el.removeAttribute('data-aos-delay');
+        el.removeAttribute('data-aos-duration');
+    });
 }
 
 // Counter Animation for Stats
