@@ -402,27 +402,34 @@ function initMobileNav() {
     }
 }
 
-// Navbar scroll effect - shadow and transparency (PC only)
+// Navbar scroll effect - shadow and transparency (PC only) - Throttled
 const navbar = document.getElementById('navbar');
 const isPCVersion = window.innerWidth > 800;
+let scrollThrottle = false;
 
 window.addEventListener('scroll', () => {
-    const currentScroll = window.pageYOffset;
+    if (scrollThrottle) return;
+    scrollThrottle = true;
     
-    if (navbar) {
-        if (currentScroll <= 0) {
-            navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
-            if (isPCVersion) {
-                navbar.classList.remove('scrolled');
-            }
-        } else {
-            navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.15)';
-            if (isPCVersion) {
-                navbar.classList.add('scrolled');
+    requestAnimationFrame(() => {
+        const currentScroll = window.pageYOffset;
+        
+        if (navbar) {
+            if (currentScroll <= 0) {
+                navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
+                if (isPCVersion) {
+                    navbar.classList.remove('scrolled');
+                }
+            } else {
+                navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.15)';
+                if (isPCVersion) {
+                    navbar.classList.add('scrolled');
+                }
             }
         }
-    }
-});
+        scrollThrottle = false;
+    });
+}, { passive: true });
 
 // Smooth scroll for anchor links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -505,28 +512,35 @@ if (contactForm) {
     });
 }
 
-// Active navigation link on scroll
+// Active navigation link on scroll - Throttled
 const sections = document.querySelectorAll('.section, .hero');
 const navLinks = document.querySelectorAll('.nav-link');
+let navThrottle = false;
 
 window.addEventListener('scroll', () => {
-    let current = '';
+    if (navThrottle) return;
+    navThrottle = true;
     
-    sections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.clientHeight;
-        if (pageYOffset >= (sectionTop - 100)) {
-            current = section.getAttribute('id');
-        }
+    requestAnimationFrame(() => {
+        let current = '';
+        
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.clientHeight;
+            if (pageYOffset >= (sectionTop - 100)) {
+                current = section.getAttribute('id');
+            }
+        });
+        
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === `#${current}`) {
+                link.classList.add('active');
+            }
+        });
+        navThrottle = false;
     });
-    
-    navLinks.forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href') === `#${current}`) {
-            link.classList.add('active');
-        }
-    });
-});
+}, { passive: true });
 
 // Form input animations
 document.querySelectorAll('.form-group input, .form-group textarea').forEach(input => {
