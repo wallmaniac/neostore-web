@@ -590,13 +590,13 @@ window.addEventListener('load', () => {
     'use strict';
     
     // ============================================
-    // HUGGINGFACE INFERENCE API (FREE AI)
+    // HUGGINGFACE INFERENCE API (FREE AI via Backend Proxy)
     // ============================================
-    // Get your free token from https://huggingface.co/settings/tokens
-    // Token is stored in browser localStorage for security
-    const HF_API_TOKEN = localStorage.getItem('hf_api_token') || null;
-    const HF_MODEL = 'mistralai/Mistral-7B-Instruct-v0.2'; // High quality open model
-    const USE_REAL_AI = HF_API_TOKEN && HF_API_TOKEN.length > 0;
+    // Token is stored on backend as environment variable
+    // Frontend calls backend to avoid CORS issues
+    const HF_API_TOKEN = null; // Not needed in browser anymore
+    const HF_MODEL = 'mistralai/Mistral-7B-Instruct-v0.2';
+    const USE_REAL_AI = true; // Always try backend proxy
     
     // Global function for inline onclick fallback
     window.toggleAIChatGlobal = function(e) {
@@ -842,51 +842,23 @@ Neotel offers professional Web Design services tailored to your needs!`
         async function getHuggingFaceResponse(userMessage) {
             const isEn = currentLang === 'en';
             const language = isEn ? 'English' : 'Croatian';
-            
-            const neotelContext = `You are an intelligent assistant for Neostore, a leading digital transformation company in Croatia.
-
-NEOSTORE SERVICES:
-1. Web Design - responsive websites, e-commerce, CMS, custom applications
-2. AI Solutions - automation, data analytics, team training
-3. Telecommunications - mobile services, internet, device financing, insurance, 24/7 support
-4. Business Planning - financing programs (HAMAG-BICRO, HBOR), business consulting
-
-NEOSTORE CONTACT:
-- Phone: +385 95 2229994
-- Email: info@neostore-platform.hr
-- Address: Alberta Ognjana Štrige 7, 10000 Zagreb, Croatia
-- Hours: Monday-Friday 09:00-17:00 (24/7 for telecom)
-
-FINANCING PROGRAMS:
-- Samozapošljavanje: Up to 120,000 kn for self-employment
-- HAMAG-BICRO: Grants, microloans, guarantees
-- HBOR: Investment and working capital loans
-- EU financing: European funds access
-
-Respond in ${language} only. Be helpful, professional, and solution-oriented. Keep responses concise.`;
 
             try {
-                const prompt = `${neotelContext}\n\nUser: ${userMessage}\nAssistant:`;
-                
-                const response = await fetch(`https://api-inference.huggingface.co/models/${HF_MODEL}`, {
+                // Call our backend proxy instead of HuggingFace directly
+                // This avoids CORS issues
+                const response = await fetch('/.netlify/functions/ai-chat', {
                     method: 'POST',
                     headers: {
-                        'Authorization': `Bearer ${HF_API_TOKEN}`,
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        inputs: prompt,
-                        parameters: {
-                            max_new_tokens: 512,
-                            temperature: 0.7,
-                            top_p: 0.9,
-                        }
+                        message: userMessage,
+                        language: isEn ? 'en' : 'hr'
                     })
                 });
 
                 if (!response.ok) {
-                    const errorData = await response.text();
-                    console.error('HuggingFace API error:', response.status, errorData);
+                    console.error('AI Proxy error:', response.status);
                     return isEn 
                         ? 'AI service is loading. Please try again in a moment.'
                         : 'AI servis se učitava. Pokušajte ponovno za trenutak.';
@@ -894,22 +866,16 @@ Respond in ${language} only. Be helpful, professional, and solution-oriented. Ke
 
                 const data = await response.json();
                 
-                // Extract the generated text
-                let aiResponse = '';
-                if (Array.isArray(data)) {
-                    aiResponse = data[0]?.generated_text || '';
-                } else {
-                    aiResponse = data.generated_text || '';
+                if (data.error) {
+                    console.error('AI API error:', data.error);
+                    return isEn
+                        ? 'AI service temporarily unavailable. Using knowledge base instead.'
+                        : 'AI servis privremeno nedostupan. Koristim bazu znanja.';
                 }
                 
-                // Clean up the response (remove the prompt part)
-                if (aiResponse.includes('Assistant:')) {
-                    aiResponse = aiResponse.split('Assistant:')[1].trim();
-                }
-                
-                return aiResponse || (isEn ? 'Unable to generate response' : 'Nije moguće generirati odgovor');
+                return data.response || (isEn ? 'Unable to generate response' : 'Nije moguće generirati odgovor');
             } catch (error) {
-                console.error('HuggingFace API call failed:', error);
+                console.error('AI proxy call failed:', error);
                 return isEn 
                     ? 'Connection error. Please try again.'
                     : 'Greška pri povezivanju. Pokušajte ponovno.';
