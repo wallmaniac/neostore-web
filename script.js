@@ -589,6 +589,15 @@ window.addEventListener('load', () => {
 (function() {
     'use strict';
     
+    // ============================================
+    // HUGGINGFACE INFERENCE API (FREE AI)
+    // ============================================
+    // Get your free token from https://huggingface.co/settings/tokens
+    // Token is stored in browser localStorage for security
+    const HF_API_TOKEN = localStorage.getItem('hf_api_token') || null;
+    const HF_MODEL = 'mistralai/Mistral-7B-Instruct-v0.2'; // High quality open model
+    const USE_REAL_AI = HF_API_TOKEN && HF_API_TOKEN.length > 0;
+    
     // Global function for inline onclick fallback
     window.toggleAIChatGlobal = function(e) {
         if (e) {
@@ -605,6 +614,12 @@ window.addEventListener('load', () => {
             }
             return false;
         }
+    };
+    
+    // Allow users to set API token (optional)
+    window.setHFToken = function(token) {
+        localStorage.setItem('hf_token', token);
+        alert('HuggingFace token updated! Refresh the page for real AI responses.');
     };
     
     // Knowledge base with detailed information from external sources
@@ -815,7 +830,93 @@ Neotel offers professional Web Design services tailored to your needs!`
             return;
         }
 
-        function getAIResponse(text) {
+        async function getAIResponse(text) {
+            // If real AI is enabled, use HuggingFace API
+            if (USE_REAL_AI) {
+                return getHuggingFaceResponse(text);
+            }
+            // Otherwise fall back to knowledge base
+            return getKnowledgeBaseResponse(text);
+        }
+        
+        async function getHuggingFaceResponse(userMessage) {
+            const isEn = currentLang === 'en';
+            const language = isEn ? 'English' : 'Croatian';
+            
+            const neotelContext = `You are an intelligent assistant for Neostore, a leading digital transformation company in Croatia.
+
+NEOSTORE SERVICES:
+1. Web Design - responsive websites, e-commerce, CMS, custom applications
+2. AI Solutions - automation, data analytics, team training
+3. Telecommunications - mobile services, internet, device financing, insurance, 24/7 support
+4. Business Planning - financing programs (HAMAG-BICRO, HBOR), business consulting
+
+NEOSTORE CONTACT:
+- Phone: +385 95 2229994
+- Email: info@neostore-platform.hr
+- Address: Alberta Ognjana Štrige 7, 10000 Zagreb, Croatia
+- Hours: Monday-Friday 09:00-17:00 (24/7 for telecom)
+
+FINANCING PROGRAMS:
+- Samozapošljavanje: Up to 120,000 kn for self-employment
+- HAMAG-BICRO: Grants, microloans, guarantees
+- HBOR: Investment and working capital loans
+- EU financing: European funds access
+
+Respond in ${language} only. Be helpful, professional, and solution-oriented. Keep responses concise.`;
+
+            try {
+                const prompt = `${neotelContext}\n\nUser: ${userMessage}\nAssistant:`;
+                
+                const response = await fetch(`https://api-inference.huggingface.co/models/${HF_MODEL}`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${HF_API_TOKEN}`,
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        inputs: prompt,
+                        parameters: {
+                            max_new_tokens: 512,
+                            temperature: 0.7,
+                            top_p: 0.9,
+                        }
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.text();
+                    console.error('HuggingFace API error:', response.status, errorData);
+                    return isEn 
+                        ? 'AI service is loading. Please try again in a moment.'
+                        : 'AI servis se učitava. Pokušajte ponovno za trenutak.';
+                }
+
+                const data = await response.json();
+                
+                // Extract the generated text
+                let aiResponse = '';
+                if (Array.isArray(data)) {
+                    aiResponse = data[0]?.generated_text || '';
+                } else {
+                    aiResponse = data.generated_text || '';
+                }
+                
+                // Clean up the response (remove the prompt part)
+                if (aiResponse.includes('Assistant:')) {
+                    aiResponse = aiResponse.split('Assistant:')[1].trim();
+                }
+                
+                return aiResponse || (isEn ? 'Unable to generate response' : 'Nije moguće generirati odgovor');
+            } catch (error) {
+                console.error('HuggingFace API call failed:', error);
+                return isEn 
+                    ? 'Connection error. Please try again.'
+                    : 'Greška pri povezivanju. Pokušajte ponovno.';
+            }
+        }
+        
+        function getKnowledgeBaseResponse(text) {
             const lower = text.toLowerCase();
             const isEn = currentLang === 'en';
 
@@ -1109,7 +1210,7 @@ All websites are responsive, fast, SEO-optimized and secure!`
         };
 
         // Send message
-        function sendAIMessage() {
+        async function sendAIMessage() {
             const message = aiChatInput.value.trim();
             if (!message) return;
             
@@ -1122,47 +1223,27 @@ All websites are responsive, fast, SEO-optimized and secure!`
             aiChatInput.value = '';
             aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
             
-            // Get AI response and check if live fetch is needed
-            const initialResponse = getAIResponse(message);
-            const shouldFetchInternet = message.toLowerCase().match(/search|find|current|latest|today|recent|information|tell me|kako|što je novo|novi|trenutno|sada/);
+            // Show loading indicator
+            const loadingMsg = document.createElement('div');
+            loadingMsg.className = 'ai-message';
+            loadingMsg.innerHTML = '<span style="color:#888; font-style:italic;">Thinking...</span>';
+            aiChatMessages.appendChild(loadingMsg);
+            aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
             
-            // Simulate bot response
-            setTimeout(async () => {
-                const botMsg = document.createElement('div');
-                botMsg.className = 'ai-message';
+            try {
+                // Get AI response (either from Groq API or knowledge base)
+                const aiResponse = await getAIResponse(message);
                 
-                // Check if user is asking about financing programs
-                if (shouldFetchInternet && message.toLowerCase().match(/hamag|hbor|samozapo|financing|krediti|grant|microcredit|subvencij|financ|loan/i)) {
-                    botMsg.innerHTML = `<span>${initialResponse}</span>`;
-                    aiChatMessages.appendChild(botMsg);
-                    
-                    // Show loading indicator
-                    botMsg.innerHTML += `<br><span style="font-size:0.85em; color:#888; font-style:italic;">Searching for latest information online...</span>`;
-                    aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
-                    
-                    // Attempt to fetch latest data from official sources
-                    let fetchedData = null;
-                    if (message.toLowerCase().match(/hamag|bicro/i)) {
-                        fetchedData = await fetchDataFromInternet('https://hamagbicro.hr/');
-                    } else if (message.toLowerCase().match(/hbor/i)) {
-                        fetchedData = await fetchDataFromInternet('https://www.hbor.hr/');
-                    } else if (message.toLowerCase().match(/samozapo|self-employ|hzz/i)) {
-                        fetchedData = await fetchDataFromInternet('https://mjere.hzz.hr/');
-                    }
-                    
-                    // Update message with fetched data if available
-                    if (fetchedData && fetchedData.length > 10) {
-                        botMsg.innerHTML = `<span>${initialResponse}<br><br><strong>Latest Online Information:</strong><br><span style="font-size:0.9em; color:#555;">${fetchedData.substring(0, 300)}...</span></span>`;
-                    } else {
-                        botMsg.innerHTML = `<span>${initialResponse}</span>`;
-                    }
-                } else {
-                    botMsg.textContent = initialResponse;
-                    aiChatMessages.appendChild(botMsg);
-                }
-                
+                // Replace loading message with actual response
+                loadingMsg.innerHTML = '';
+                loadingMsg.textContent = aiResponse;
                 aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
-            }, 500);
+            } catch (error) {
+                console.error('Error getting AI response:', error);
+                loadingMsg.textContent = currentLang === 'en' 
+                    ? 'Sorry, there was an error processing your message.'
+                    : 'Izvinjavam se, došlo je do greške pri obradi poruke.';
+            }
         }
 
         // Event listeners for close and send buttons only
