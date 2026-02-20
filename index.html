@@ -3,9 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
     
     <!-- Primary Meta Tags -->
     <title>Neostore - Telekomunikacije, Web Dizajn, AI Riješenja | Vaš Partner za Digitalno Poslovanje</title>
@@ -14,7 +11,7 @@
     <meta name="keywords" content="Neostore, neostore, telekomunikacije, web dizajn, AI riješenja, web stranice, digitalno poslovanje, poslovno planiranje, umjetna inteligencija, web development, Croatia">
     <meta name="author" content="Neostore">
     <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://neostore-platform.hr/">
+        <link rel="canonical" href="https://neostore-platform.hr/">
     <meta http-equiv="Last-Modified" content="2026-02-19T08:00:00Z">
     
     <!-- Open Graph / Facebook -->
@@ -105,7 +102,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-    <script src="script.js?v=20260219100000" defer></script>
+        <script src="script.js?v=20260220120000" defer></script>
 </head>
 <body>
     <!-- Navigation -->
@@ -146,32 +143,9 @@
     <!-- Hero Section -->
     <section id="home" class="hero">
         <div class="hero-background">
-            <video class="hero-video" autoplay muted playsinline>
+            <video class="hero-video" autoplay muted playsinline preload="metadata">
                 <source src="snimka.mp4" type="video/mp4">
-            </video>
-            <script>
-                const heroVideo = document.querySelector('.hero-video');
-                heroVideo.playbackRate = 0.8;
-                
-                // Crossfade out video when it ends
-                heroVideo.addEventListener('ended', () => {
-                    heroVideo.style.transition = 'opacity 0.2s ease-out';
-                    heroVideo.style.opacity = '0';
-                });
-                
-                const heroObserver = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            heroVideo.style.transition = 'opacity 0.5s ease-in';
-                            heroVideo.style.opacity = '0.15';
-                            heroVideo.currentTime = 0;
-                            heroVideo.play();
-                        }
-                    });
-                }, { threshold: 0.3 });
-                
-                heroObserver.observe(document.querySelector('.hero'));
-            </script>
+                </video>
             <svg class="hero-waves" viewBox="0 0 1200 120" preserveAspectRatio="none">
                 <path d="M0,50 Q300,0 600,50 T1200,50 L1200,120 L0,120 Z" fill="url(#waveGradient)"></path>
             </svg>

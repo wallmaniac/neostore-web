@@ -267,6 +267,44 @@ function initHeroSteps() {
     startAutoAdvance();
 }
 
+function initVideoObservers() {
+    const videos = document.querySelectorAll('.hero-video, .card-video-bg');
+    if (!videos.length) {
+        return;
+    }
+
+    const heroVideo = document.querySelector('.hero-video');
+    if (heroVideo && !heroVideo.dataset.enhanced) {
+        heroVideo.dataset.enhanced = 'true';
+        heroVideo.playbackRate = 0.8;
+        heroVideo.addEventListener('ended', () => {
+            heroVideo.style.transition = 'opacity 0.2s ease-out';
+            heroVideo.style.opacity = '0';
+        });
+    }
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            const video = entry.target;
+            if (entry.isIntersecting) {
+                if (video.classList.contains('hero-video')) {
+                    video.style.transition = 'opacity 0.5s ease-in';
+                    video.style.opacity = '0.15';
+                    video.currentTime = 0;
+                }
+                const playPromise = video.play();
+                if (playPromise && typeof playPromise.catch === 'function') {
+                    playPromise.catch(() => {});
+                }
+            } else {
+                video.pause();
+            }
+        });
+    }, { threshold: 0.2 });
+
+    videos.forEach(video => observer.observe(video));
+}
+
 function initLanguageSwitcher() {
     document.querySelectorAll('.lang-btn').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -1190,12 +1228,14 @@ if (document.readyState === 'loading') {
         initMobileNav();
         ensureAOSVisibility();
         initHeroSteps();
+        initVideoObservers();
     });
 } else {
     initLanguageSwitcher();
     initMobileNav();
     ensureAOSVisibility();
     initHeroSteps();
+    initVideoObservers();
 }
 
 window.addEventListener('resize', ensureAOSVisibility);
