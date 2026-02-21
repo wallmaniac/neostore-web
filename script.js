@@ -594,9 +594,9 @@ window.addEventListener('load', () => {
     // ============================================
     // Token is stored on backend as environment variable
     // Frontend calls backend to avoid CORS issues
-    const HF_API_TOKEN = null; // Not needed in browser anymore
-    const HF_MODEL = 'mistralai/Mistral-7B-Instruct-v0.2';
-    const USE_REAL_AI = true; // Always try backend proxy
+        const HF_API_TOKEN = null; // Not needed in browser anymore
+        const HF_MODEL = 'mistralai/Mistral-7B-Instruct-v0.2';
+        const USE_REAL_AI = true; // Always try backend proxy
     
     // Global function for inline onclick fallback
     window.toggleAIChatGlobal = function(e) {
@@ -843,8 +843,8 @@ Neotel offers professional Web Design services tailored to your needs!`
             const isEn = currentLang === 'en';
 
             try {
-                // Call our Cloudflare Pages function
-                const response = await fetch('/ai-chat', {
+                // Cloudflare Worker endpoint
+                const response = await fetch('https://neostore-ai.zzidar1111.workers.dev', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -857,26 +857,20 @@ Neotel offers professional Web Design services tailored to your needs!`
 
                 if (!response.ok) {
                     console.error('AI API error:', response.status);
-                    return isEn 
-                        ? 'AI service temporarily unavailable. Using knowledge base instead.'
-                        : 'AI servis privremeno nedostupan. Koristim bazu znanja.';
+                    return getKnowledgeBaseResponse(userMessage);
                 }
 
                 const data = await response.json();
-                
+
                 if (data.error) {
                     console.error('API returned error:', data.error);
-                    return isEn
-                        ? 'AI service error. Using knowledge base instead.'
-                        : 'Greška AI servisa. Koristim bazu znanja.';
+                    return getKnowledgeBaseResponse(userMessage);
                 }
-                
-                return data.response || (isEn ? 'Unable to generate response' : 'Nije moguće generirati odgovor');
+
+                return data.response || getKnowledgeBaseResponse(userMessage);
             } catch (error) {
                 console.error('AI request failed:', error);
-                return isEn 
-                    ? 'Connection error. Using knowledge base instead.'
-                    : 'Greška pri povezivanju. Koristim bazu znanja.';
+                return getKnowledgeBaseResponse(userMessage);
             }
         }
         
