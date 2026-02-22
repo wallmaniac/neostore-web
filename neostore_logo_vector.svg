@@ -1,0 +1,13 @@
+<!-- SVG vector logo for Neostore: Calibri font, equal letter spacing, transparent background -->
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="110" viewBox="0 0 420 110">
+  <text font-family="Calibri, Arial, Helvetica, sans-serif" font-size="90" font-weight="bold" y="90" letter-spacing="-10px">
+    <tspan fill="#ff0000">n</tspan>
+    <tspan fill="#ffffff">e</tspan>
+    <tspan fill="#ffffff">o</tspan>
+    <tspan fill="#ffffff">s</tspan>
+    <tspan fill="#ffffff">t</tspan>
+    <tspan fill="#ffffff">o</tspan>
+    <tspan fill="#ffffff">r</tspan>
+    <tspan fill="#0033ff">e</tspan>
+  </text>
+</svg>
