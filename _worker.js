@@ -5,6 +5,12 @@
 
 export default {
     async fetch(request, env) {
+        const url = new URL(request.url);
+        // Only handle /ai-chat API route
+        if (url.pathname !== '/ai-chat') {
+            // Serve static site for all other paths
+            return fetch(request);
+        }
         const headers = {
             'Access-Control-Allow-Origin': '*',
             'Access-Control-Allow-Methods': 'POST, OPTIONS',
