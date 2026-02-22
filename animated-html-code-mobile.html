@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Animated HTML Code Writing - Mobile</title>
+  <style>
+    .gradient-text {
+      background: linear-gradient(90deg, #00c3ff 0%, #ffff1c 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      color: transparent;
+      font-weight: 800 !important;
+    }
+    html, body {
+      background: transparent;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      width: 100vw !important;
+      overflow-x: hidden;
+    }
+    .window {
+      background: #282c34;
+      width: 100vw !important;
+      height: 100%;
+      margin: 0;
+      border-radius: 0;
+      padding: 0;
+      overflow: hidden;
+      border: none;
+      box-shadow: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+    }
+    .window-header {
+      background: #21252b;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      border-bottom: 1px solid #444;
+      border-radius: 0;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .window-header .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-right: 6px;
+      display: inline-block;
+    }
+    .dot.red { background: #ff5f56; }
+    .dot.yellow { background: #ffbd2e; }
+    .dot.green { background: #27c93f; }
+    pre {
+      color: #fff;
+      font-family: 'Fira Mono', 'Consolas', 'Monaco', monospace;
+      font-size: 0.9em;
+      font-weight: 800 !important;
+      width: 95%;
+      box-sizing: border-box;
+      margin: 12px auto;
+      text-align: left;
+      display: block;
+      line-height: 1.4;
+      word-wrap: break-word;
+      white-space: pre-wrap;
+      overflow-x: auto;
+    }
+    .cursor {
+      display: inline-block;
+      width: 8px;
+      background: #d4d4d4;
+      animation: blink 1s steps(1) infinite;
+      height: 1em;
+      vertical-align: bottom;
+    }
+    @keyframes blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="window">
+    <div class="window-header">
+      <span class="dot red"></span>
+      <span class="dot yellow"></span>
+      <span class="dot green"></span>
+    </div>
+    <pre id="code"><span class="cursor"></span></pre>
+  </div>
+  <script>
+    const code = `<Responzivan dizajn za sve uređaje>\n\n<SEO optimizacija za bolje rangiranje>\n\n<Brzo učitavanje i visoke performanse>\n\n<E-commerce i Web shop riješenja>\n\n<Personalizirani ERP sustavi>\n\n<Web aplikacije po mjeri>`;
+    const codeEl = document.getElementById('code');
+    let i = 0;
+    let typingTimeout = null;
+    function typeCode() {
+      const visible = code.slice(0, i);
+      codeEl.innerHTML = `<span class="gradient-text">${visible.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</span><span class="cursor"></span>`;
+      let delay = 12;
+      if (i < code.length) {
+        i++;
+        typingTimeout = setTimeout(typeCode, delay);
+      }
+    }
+
+    // Use Intersection Observer to restart animation every time image is in view
+    const observer = new window.IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          if (typingTimeout) clearTimeout(typingTimeout);
+          i = 0;
+          typeCode();
+        }
+      });
+    }, { threshold: 0.2 });
+    observer.observe(document.querySelector('.window'));
+  </script>
+</body>
+</html>

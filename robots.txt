@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /functions/
+Disallow: /content/
+
+Sitemap: https://neostore-platform.hr/sitemap.xml
+
+# Crawl-delay for better server performance
+Crawl-delay: 1

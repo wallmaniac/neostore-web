@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Services - Animated Display</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      background: transparent;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      width: 100%;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    .ai-services-container {
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.1) 0%, rgba(99, 102, 241, 0.1) 100%);
+      width: 100%;
+      height: 100%;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      border-radius: 20px;
+    }
+
+    /* AI Brain Icon Animation */
+    .ai-brain {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      font-size: 48px;
+      color: rgba(0, 102, 204, 0.3);
+      animation: float 3s ease-in-out infinite;
+    }
+
+    /* Grid of services */
+    .services-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      max-width: 800px;
+      width: 100%;
+    }
+
+    .service-box {
+      background: rgba(255, 255, 255, 0.05);
+      border: 2px solid rgba(0, 168, 255, 0.3);
+      border-radius: 16px;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+      animation: slideUp 0.6s ease-out backwards;
+    }
+
+    .service-box:nth-child(1) { animation-delay: 0.1s; }
+    .service-box:nth-child(2) { animation-delay: 0.2s; }
+    .service-box:nth-child(3) { animation-delay: 0.3s; }
+    .service-box:nth-child(4) { animation-delay: 0.4s; }
+
+    .service-box:hover {
+      border-color: rgba(0, 168, 255, 0.8);
+      background: rgba(0, 168, 255, 0.1);
+      transform: translateY(-5px);
+    }
+
+    .service-icon {
+      font-size: 42px;
+      background: linear-gradient(135deg, #0066cc 0%, #00a8ff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 15px;
+      animation: iconPulse 2s ease-in-out infinite;
+    }
+
+    .service-box:nth-child(2) .service-icon { animation-delay: 0.2s; }
+    .service-box:nth-child(3) .service-icon { animation-delay: 0.4s; }
+    .service-box:nth-child(4) .service-icon { animation-delay: 0.6s; }
+
+    .service-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #14171a;
+      margin-bottom: 10px;
+      letter-spacing: 0.3px;
+    }
+
+    .service-desc {
+      font-size: 0.85rem;
+      color: #657786;
+      line-height: 1.5;
+    }
+
+    /* AI Network Lines */
+    .ai-network-lines {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+    }
+
+    .network-line {
+      position: absolute;
+      background: linear-gradient(90deg, transparent, rgba(0, 168, 255, 0.3), transparent);
+      animation: flowLine 3s ease-in-out infinite;
+    }
+
+    /* Animations */
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes iconPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+    }
+
+    @keyframes flowLine {
+      0% { opacity: 0; }
+      50% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+
+    /* AI Indicator Text */
+    .ai-indicator {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      font-size: 0.85rem;
+      color: rgba(0, 102, 204, 0.6);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+    }
+
+    .ai-indicator i {
+      animation: spin 4s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="ai-network-lines" id="networkLines"></div>
+  
+  <div class="ai-services-container">
+    <i class="fas fa-brain ai-brain"></i>
+
+    <div class="services-grid">
+      <div class="service-box">
+        <i class="fas fa-graduation-cap service-icon"></i>
+        <h3 class="service-title">AI Edukacije</h3>
+        <p class="service-desc">Obučavamo Vaš tim za korištenje AI alata i tehnologija</p>
+      </div>
+
+      <div class="service-box">
+        <i class="fas fa-robot service-icon"></i>
+        <h3 class="service-title">Automatizacija procesa</h3>
+        <p class="service-desc">Implementiramo AI riješenja za automatizaciju rutinskih zadataka</p>
+      </div>
+
+      <div class="service-box">
+        <i class="fas fa-chart-line service-icon"></i>
+        <h3 class="service-title">Analitika i predviđanja</h3>
+        <p class="service-desc">Korištenje AI za dubinsku analizu podataka i poslovne prediktive</p>
+      </div>
+
+      <div class="service-box">
+        <i class="fas fa-cogs service-icon"></i>
+        <h3 class="service-title">Optimizacija procesa</h3>
+        <p class="service-desc">Poboljšanje efikasnosti kroz AI-vođenu optimizaciju</p>
+      </div>
+    </div>
+
+    <div class="ai-indicator">
+      <i class="fas fa-microchip"></i>
+      <span>Powered by AI</span>
+    </div>
+  </div>
+
+  <script>
+    // Generate network lines
+    const networkLines = document.getElementById('networkLines');
+    for (let i = 0; i < 5; i++) {
+      const line = document.createElement('div');
+      line.className = 'network-line';
+      line.style.width = Math.random() * 200 + 100 + 'px';
+      line.style.height = '2px';
+      line.style.top = Math.random() * 100 + '%';
+      line.style.left = Math.random() * 100 + '%';
+      line.style.animationDelay = (i * 0.6) + 's';
+      networkLines.appendChild(line);
+    }
+  </script>
+</body>
+</html>

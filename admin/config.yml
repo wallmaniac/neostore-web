@@ -1,0 +1,94 @@
+backend:
+  name: github
+  repo: wallmaniac/neostore-web
+  branch: main
+  base_url: https://neostore-platform.hr
+  auth_endpoint: auth
+
+media_folder: "/"
+public_folder: "/"
+
+collections:
+  - name: "content"
+    label: "Website Content"
+    files:
+      - name: "hero"
+        label: "Hero Section"
+        file: "content/hero.json"
+        fields:
+          - {label: "Title (Croatian)", name: "title_hr", widget: "string"}
+          - {label: "Title (English)", name: "title_en", widget: "string"}
+          - {label: "Subtitle (Croatian)", name: "subtitle_hr", widget: "text"}
+          - {label: "Subtitle (English)", name: "subtitle_en", widget: "text"}
+          - {label: "Badge (Croatian)", name: "badge_hr", widget: "string"}
+          - {label: "Badge (English)", name: "badge_en", widget: "string"}
+      
+      - name: "web"
+        label: "Web Development Section"
+        file: "content/web.json"
+        fields:
+          - {label: "Section Title (Croatian)", name: "title_hr", widget: "string"}
+          - {label: "Section Title (English)", name: "title_en", widget: "string"}
+          - {label: "Subtitle (Croatian)", name: "subtitle_hr", widget: "text"}
+          - {label: "Subtitle (English)", name: "subtitle_en", widget: "text"}
+          - {label: "Heading (Croatian)", name: "heading_hr", widget: "string"}
+          - {label: "Heading (English)", name: "heading_en", widget: "string"}
+          - {label: "Description (Croatian)", name: "description_hr", widget: "text"}
+          - {label: "Description (English)", name: "description_en", widget: "text"}
+      
+      - name: "ai"
+        label: "AI Solutions Section"
+        file: "content/ai.json"
+        fields:
+          - {label: "Section Title (Croatian)", name: "title_hr", widget: "string"}
+          - {label: "Section Title (English)", name: "title_en", widget: "string"}
+          - {label: "Subtitle (Croatian)", name: "subtitle_hr", widget: "text"}
+          - {label: "Subtitle (English)", name: "subtitle_en", widget: "text"}
+          - {label: "Heading (Croatian)", name: "heading_hr", widget: "string"}
+          - {label: "Heading (English)", name: "heading_en", widget: "string"}
+          - {label: "Description (Croatian)", name: "description_hr", widget: "text"}
+          - {label: "Description (English)", name: "description_en", widget: "text"}
+      
+      - name: "telecom"
+        label: "Telecommunications Section"
+        file: "content/telecom.json"
+        fields:
+          - {label: "Section Title (Croatian)", name: "title_hr", widget: "string"}
+          - {label: "Section Title (English)", name: "title_en", widget: "string"}
+          - {label: "Subtitle (Croatian)", name: "subtitle_hr", widget: "text"}
+          - {label: "Subtitle (English)", name: "subtitle_en", widget: "text"}
+          - {label: "B2B Title (Croatian)", name: "b2b_title_hr", widget: "string"}
+          - {label: "B2B Title (English)", name: "b2b_title_en", widget: "string"}
+          - {label: "B2B Description (Croatian)", name: "b2b_description_hr", widget: "text"}
+          - {label: "B2B Description (English)", name: "b2b_description_en", widget: "text"}
+          - {label: "Service Title (Croatian)", name: "service_title_hr", widget: "string"}
+          - {label: "Service Title (English)", name: "service_title_en", widget: "string"}
+          - {label: "Service Description (Croatian)", name: "service_description_hr", widget: "text"}
+          - {label: "Service Description (English)", name: "service_description_en", widget: "text"}
+      
+      - name: "business"
+        label: "Business Planning Section"
+        file: "content/business.json"
+        fields:
+          - {label: "Section Title (Croatian)", name: "title_hr", widget: "string"}
+          - {label: "Section Title (English)", name: "title_en", widget: "string"}
+          - {label: "Subtitle (Croatian)", name: "subtitle_hr", widget: "text"}
+          - {label: "Subtitle (English)", name: "subtitle_en", widget: "text"}
+      
+      - name: "contact"
+        label: "Contact Section"
+        file: "content/contact.json"
+        fields:
+          - {label: "Title (Croatian)", name: "title_hr", widget: "string"}
+          - {label: "Title (English)", name: "title_en", widget: "string"}
+      
+      - name: "settings"
+        label: "Site Settings"
+        file: "content/settings.json"
+        fields:
+          - {label: "Site Title", name: "site_title", widget: "string"}
+          - {label: "Site Description", name: "site_description", widget: "text"}
+          - {label: "Contact Phone", name: "contact_phone", widget: "string"}
+          - {label: "Contact Email", name: "contact_email", widget: "string"}
+          - {label: "Contact Address", name: "contact_address", widget: "string"}
+          - {label: "Logo", name: "logo", widget: "image"}
