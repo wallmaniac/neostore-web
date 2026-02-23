@@ -114,34 +114,30 @@
 </head>
 <body>
 <script>
-// Show neologo.svg in navbar for mobile only
-function insertMobileLogo() {
-    var logoSpan = document.querySelector('.mobile-logo');
+// Toggle between desktop and mobile logo
+function updateLogoDisplay() {
+    var pcLogo = document.querySelector('.pc-logo');
+    var mobileLogo = document.querySelector('.mobile-logo');
     if(window.innerWidth <= 800) {
-        if(logoSpan) {
-            logoSpan.style.display = 'block';
-            logoSpan.style.width = '100vw';
-            logoSpan.style.overflow = 'visible';
-            logoSpan.innerHTML = '<img src="neologo.svg" alt="Neostore Logo" style="height:38px;width:auto;max-width:100vw;vertical-align:middle;background:transparent;position:relative;left:6mm;clip-path:none;display:block;margin:0 auto;">';
-        }
+        if(pcLogo) pcLogo.style.display = 'none';
+        if(mobileLogo) mobileLogo.style.display = 'block';
     } else {
-        if(logoSpan) {
-            logoSpan.style.display = 'none';
-            logoSpan.innerHTML = '';
-        }
+        if(pcLogo) pcLogo.style.display = 'inline-block';
+        if(mobileLogo) mobileLogo.style.display = 'none';
     }
 }
-window.addEventListener('DOMContentLoaded', insertMobileLogo);
-window.addEventListener('resize', insertMobileLogo);
+window.addEventListener('DOMContentLoaded', updateLogoDisplay);
+window.addEventListener('resize', updateLogoDisplay);
 </script>
     <!-- Navigation -->
     <nav class="navbar" id="navbar">
         <div class="container nav-container">
             <div class="logo">
                 <a href="#home">
-                    <!-- PC logo: show neologo.svg, hidden on mobile -->
+                    <!-- PC logo: show neologo.svg only on desktop -->
                     <img class="nav-logo-img pc-logo" src="neologo.svg" alt="Neostore Logo" style="display:inline-block;">
-                    <span class="mobile-logo" style="display:none"></span>
+                    <!-- Mobile logo: show neologo-mobile.svg only on mobile -->
+                    <img class="nav-logo-img mobile-logo" src="neologo-mobile.svg" alt="Neostore Logo Mobile" style="display:none;">
                 </a>
             </div>
             <div class="nav-menu" id="navMenu">
