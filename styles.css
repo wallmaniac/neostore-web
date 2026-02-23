@@ -2841,8 +2841,8 @@ body.dark-mode .dark-mode-toggle:hover {
     }
 
     .nav-logo-img {
-        height: 36px; /* 10% smaller for PC */
-        max-width: 162px;
+        height: 32px; /* 10% more decrease for PC */
+        max-width: 146px;
         transition: none;
         transform: translateX(6mm);
         filter: none;
@@ -2850,8 +2850,8 @@ body.dark-mode .dark-mode-toggle:hover {
     }
 @media (max-width: 800px) {
     .nav-logo-img {
-        height: 32px; /* 20% smaller for mobile */
-        max-width: 130px;
+        height: 38px; /* 20% increase for mobile */
+        max-width: 156px;
     }
 }
 
