@@ -2828,10 +2828,10 @@ body.dark-mode .dark-mode-toggle:hover {
         position: relative;
     }
 
-    .dark-mode-toggle {
-           position: absolute;
-           left: 56px;
-           top: calc(6px + 2mm); /* moved 2mm down */
+        .dark-mode-toggle {
+            position: absolute;
+            left: 55px; /* 1mm left */
+            top: calc(6px); /* 2mm up from previous */
         margin-left: 0;
         width: 36px;
         height: 36px;
