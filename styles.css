@@ -2833,7 +2833,7 @@ body.dark-mode .dark-mode-toggle:hover {
 
         .dark-mode-toggle {
             position: absolute;
-            left: 53px; /* 1mm more left */
+            left: 51px; /* 2mm more left */
             top: calc(6px); /* 2mm up from previous */
         margin-left: 0;
         width: 36px;
