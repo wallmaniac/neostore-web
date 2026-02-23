@@ -1,3 +1,14 @@
+@media (min-width: 801px) and (max-width: 1024px) {
+    .navbar .logo .pc-logo {
+        display: block !important;
+        height: 42.43px !important;
+        width: auto !important;
+        max-width: none !important;
+    }
+    .navbar .logo .mobile-logo {
+        display: none !important;
+    }
+}
 @media (min-width: 801px) {
     .window, .window pre {
         text-align: left !important;
@@ -2833,8 +2844,8 @@ body.dark-mode .dark-mode-toggle:hover {
 
         .dark-mode-toggle {
             position: absolute;
-            left: 51px; /* 2mm more left */
-            top: calc(6px); /* 2mm up from previous */
+            left: 49px; /* 2mm more left */
+            top: calc(4px); /* 2mm up from previous */
         margin-left: 0;
         width: 36px;
         height: 36px;
