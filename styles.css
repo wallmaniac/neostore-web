@@ -2841,13 +2841,19 @@ body.dark-mode .dark-mode-toggle:hover {
     }
 
     .nav-logo-img {
-        height: 40px;
-        max-width: 180px;
+        height: 36px; /* 10% smaller for PC */
+        max-width: 162px;
         transition: none;
         transform: translateX(6mm);
         filter: none;
         animation: none;
     }
+@media (max-width: 800px) {
+    .nav-logo-img {
+        height: 32px; /* 20% smaller for mobile */
+        max-width: 130px;
+    }
+}
 
     .nav-logo-img:active {
         animation: none;
