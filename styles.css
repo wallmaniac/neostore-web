@@ -4,6 +4,8 @@
     }
     .footer-logo-desktop {
         display: inline-block !important;
+        text-align: left !important;
+        margin-left: 0 !important;
     }
 }
 @media (max-width: 800px) {
@@ -543,7 +545,7 @@ body.dark-mode .dark-mode-toggle:hover {
 
 /* HERO SECTION */
 .hero {
-    min-height: 100vh;
+    min-height: calc(100vh + 20mm);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -703,6 +705,11 @@ body.dark-mode .dark-mode-toggle:hover {
     width: 100%;
     text-align: center;
     margin-top: -19px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    gap: 40px;
 }
 
 .hero-grid {
@@ -3635,9 +3642,6 @@ body.dark-mode .btn-primary {
 body.dark-mode .btn-primary:hover {
     box-shadow: 0 6px 25px rgba(0, 168, 255, 0.5);
     transform: translateY(-2px);
-}
-
-body.dark-mode .map-container-mobile {
 }
 
 body.dark-mode .btn-secondary {
