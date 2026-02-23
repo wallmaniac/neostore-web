@@ -212,8 +212,11 @@ body {
     }
 }
 @media (max-width: 800px) {
-    .navbar .logo .nav-logo-img {
+    .navbar .logo .pc-logo {
         display: none !important;
+    }
+    .navbar .logo .mobile-logo {
+        display: block !important;
     }
     .navbar .logo {
         overflow: visible !important;
@@ -2830,7 +2833,7 @@ body.dark-mode .dark-mode-toggle:hover {
 
         .dark-mode-toggle {
             position: absolute;
-            left: 55px; /* 1mm left */
+            left: 54px; /* 1mm more left */
             top: calc(6px); /* 2mm up from previous */
         margin-left: 0;
         width: 36px;
