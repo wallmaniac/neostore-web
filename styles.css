@@ -1,4 +1,20 @@
 @media (min-width: 801px) and (max-width: 1024px) {
+    .footer-logo-mobile {
+        display: none !important;
+    }
+    .footer-logo-desktop {
+        display: inline-block !important;
+    }
+}
+@media (max-width: 800px) {
+    .footer-logo-mobile {
+        display: inline-block !important;
+    }
+    .footer-logo-desktop {
+        display: none !important;
+    }
+}
+@media (min-width: 801px) and (max-width: 1024px) {
     .navbar .logo .pc-logo {
         display: block !important;
         height: 42.43px !important;
