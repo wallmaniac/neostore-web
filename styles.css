@@ -206,7 +206,7 @@ body {
 /* Force navbar logo sizing to ensure overrides apply */
 @media (min-width: 801px) {
     .navbar .logo .nav-logo-img {
-           height: 27.2px !important; /* PC size, reduced by 15% */
+           height: 42.43px !important; /* PC size, increased by 20% more */
         width: auto !important;
         max-width: none !important;
     }

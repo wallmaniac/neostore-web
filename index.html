@@ -120,7 +120,7 @@ function insertMobileLogo() {
     if(window.innerWidth <= 800) {
         if(logoSpan) {
             logoSpan.style.display = 'inline-block';
-            logoSpan.innerHTML = '<img src="neologo.svg" alt="Neostore Logo" style="height:38px;width:auto;vertical-align:middle;background:transparent;">';
+                logoSpan.innerHTML = '<img src="neologo.svg" alt="Neostore Logo" style="height:38px;width:auto;vertical-align:middle;background:transparent;position:relative;left:6mm;clip-path:none;max-width:none;">';
         }
     } else {
         if(logoSpan) {
@@ -137,7 +137,8 @@ window.addEventListener('resize', insertMobileLogo);
         <div class="container nav-container">
             <div class="logo">
                 <a href="#home">
-                    <!-- PC logo hidden on mobile, show SVG for mobile -->
+                    <!-- PC logo: show neologo.svg, hidden on mobile -->
+                    <img class="nav-logo-img pc-logo" src="neologo.svg" alt="Neostore Logo" style="display:inline-block;">
                     <span class="mobile-logo" style="display:none"></span>
                 </a>
             </div>
