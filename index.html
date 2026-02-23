@@ -113,12 +113,32 @@
         <script src="script.js?v=20260220140000" defer></script>
 </head>
 <body>
+<script>
+// Show neologo.svg in navbar for mobile only
+function insertMobileLogo() {
+    var logoSpan = document.querySelector('.mobile-logo');
+    if(window.innerWidth <= 800) {
+        if(logoSpan) {
+            logoSpan.style.display = 'inline-block';
+            logoSpan.innerHTML = '<img src="neologo.svg" alt="Neostore Logo" style="height:38px;width:auto;vertical-align:middle;background:transparent;">';
+        }
+    } else {
+        if(logoSpan) {
+            logoSpan.style.display = 'none';
+            logoSpan.innerHTML = '';
+        }
+    }
+}
+window.addEventListener('DOMContentLoaded', insertMobileLogo);
+window.addEventListener('resize', insertMobileLogo);
+</script>
     <!-- Navigation -->
     <nav class="navbar" id="navbar">
         <div class="container nav-container">
             <div class="logo">
                 <a href="#home">
-                    <img class="nav-logo-img" src="neologo.svg" alt="Neostore Logo" style="height:54px;width:auto;vertical-align:middle;background:transparent;">
+                    <!-- PC logo hidden on mobile, show SVG for mobile -->
+                    <span class="mobile-logo" style="display:none"></span>
                 </a>
             </div>
             <div class="nav-menu" id="navMenu">

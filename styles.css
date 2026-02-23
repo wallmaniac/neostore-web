@@ -203,6 +203,23 @@ body {
     touch-action: manipulation;
 }
 
+/* Force navbar logo sizing to ensure overrides apply */
+@media (min-width: 801px) {
+    .navbar .logo .nav-logo-img {
+           height: 27.2px !important; /* PC size, reduced by 15% */
+        width: auto !important;
+        max-width: none !important;
+    }
+}
+@media (max-width: 800px) {
+    .navbar .logo .nav-logo-img {
+        display: none !important;
+    }
+    .navbar .logo {
+        overflow: visible !important;
+    }
+}
+
 .nav-logo-img:hover {
     transform: none;
     filter: none;
