@@ -170,11 +170,11 @@ body {
 }
 
 .nav-container {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    padding: 2px 20px;
-    gap: 20px;
+       display: flex;
+       justify-content: flex-start;
+       align-items: center;
+       padding: 1.7px 17px; /* reduced by ~15% */
+       gap: 20px;
 }
 
 .logo {
@@ -2802,8 +2802,8 @@ body.dark-mode .dark-mode-toggle:hover {
 /* ======== MOBILE RESPONSIVENESS ======== */
 @media (max-width: 1024px) {
     .nav-container {
-        justify-content: space-between;
-        padding: 4px 10px;
+           justify-content: space-between;
+           padding: 3.4px 8.5px; /* reduced by ~15% */
         display: grid;
         grid-template-columns: auto 1fr auto;
         align-items: center;
@@ -2812,9 +2812,9 @@ body.dark-mode .dark-mode-toggle:hover {
     }
 
     .dark-mode-toggle {
-        position: absolute;
-        left: 56px;
-        top: 6px;
+           position: absolute;
+           left: 56px;
+           top: calc(6px + 2mm); /* moved 2mm down */
         margin-left: 0;
         width: 36px;
         height: 36px;
@@ -2824,34 +2824,38 @@ body.dark-mode .dark-mode-toggle:hover {
     }
 
     .hamburger {
-        display: flex;
-        z-index: 10002;
-        padding: 10px;
-        order: 1;
-        justify-self: start;
-    }
+            display: flex;
+            z-index: 10002;
+            padding: 10px;
+            order: 1;
+            justify-self: start;
+            transform: translateX(-2mm); /* move 2mm left */
+        }
 
     .logo {
-        position: relative;
-        left: auto;
-        transform: none;
-        order: 2;
-        justify-self: center;
-        margin: 0;
-    }
+            position: relative;
+            left: auto;
+            transform: none;
+            order: 2;
+            justify-self: center;
+            margin: 0;
+            overflow: visible; /* ensure logo isn't clipped */
+        }
 
     .nav-logo-img {
-        height: 32px; /* 10% more decrease for PC */
-        max-width: 146px;
-        transition: none;
-        transform: translateX(6mm);
-        filter: none;
-        animation: none;
-    }
+            height: 32px; /* PC size */
+            max-width: 146px;
+            transition: none;
+            transform: translateX(6mm);
+            filter: none;
+            animation: none;
+        }
 @media (max-width: 800px) {
     .nav-logo-img {
-        height: 38px; /* 20% increase for mobile */
-        max-width: 156px;
+        height: 38px; /* mobile size (increased) */
+        max-width: none;
+        margin-right: 2mm; /* ensure last letter has room */
+        object-fit: contain;
     }
 }
 
