@@ -1174,6 +1174,49 @@ body.dark-mode .dark-mode-toggle:hover {
     }
 }
 
+/* Desktop (PC) adjustments requested by user */
+@media (min-width: 801px) {
+    /* Move hero main title up by 5mm */
+    .hero-title {
+        --hero-title-offset: -5mm !important;
+    }
+
+    /* Move hero badge down by additional 10mm (was 8mm in larger breakpoint) */
+    .hero-badge {
+        transform: translateY(18mm) !important;
+    }
+
+    /* Footer: make quick links two columns (spread), reduce overall footer padding */
+    .footer {
+        padding: 24px 0 16px !important;
+    }
+
+    /* Target the first footer-links (Brzi linkovi) and display as two columns */
+    .footer-content > .footer-links:first-of-type {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px 18px;
+        align-items: start;
+    }
+
+    .footer-content {
+        gap: 28px !important;
+        align-items: start;
+    }
+
+    .footer-links a {
+        padding: 6px 0;
+    }
+
+    /* Reduce footer logo spacing so footer height fits content */
+    .footer-logo img {
+        height: 60px;
+        margin-bottom: 8px;
+        max-width: 100%;
+    }
+}
+
+
 .mouse {
     width: 30px;
     height: 50px;
