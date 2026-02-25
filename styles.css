@@ -1,16 +1,11 @@
-@media (min-width: 801px) {
+@media (min-width: 801px) and (max-width: 1024px) {
     .footer-logo-mobile {
         display: none !important;
     }
     .footer-logo-desktop {
         display: inline-block !important;
-        margin-left: 0 !important;
-    }
-    .footer-logo {
         text-align: left !important;
-        justify-content: flex-start !important;
-        display: flex !important;
-        align-items: center !important;
+        margin-left: 0 !important;
     }
 }
 @media (max-width: 800px) {
@@ -19,12 +14,6 @@
     }
     .footer-logo-desktop {
         display: none !important;
-    }
-    .footer-logo {
-        text-align: center !important;
-        justify-content: center !important;
-        display: flex !important;
-        align-items: center !important;
     }
 }
 @media (min-width: 801px) and (max-width: 1024px) {
@@ -43,6 +32,21 @@
         text-align: left !important;
     }
 }
+
+/* Ensure logo visibility is handled by CSS only to avoid JS flash */
+.navbar .logo .pc-logo { display: none; }
+.navbar .logo .mobile-logo { display: inline-block; }
+
+@media (min-width: 801px) {
+    .navbar .logo .pc-logo { display: inline-block !important; }
+    .navbar .logo .mobile-logo { display: none !important; }
+
+    /* Footer: align logo to bottom/left on desktop */
+    .footer-content { align-items: end; }
+    .footer-logo-mobile { display: none !important; }
+    .footer-logo-desktop { display: inline-block !important; margin-left: 0 !important; }
+}
+
 
 /* Mobile animated code window - 2mm margins each side */
 @media (max-width: 800px) {
