@@ -3928,7 +3928,7 @@ body.dark-mode .hero-sparkles {
         margin: 0 auto !important;
         height: 70px !important;
         width: auto !important;
-        transform: translateX(-6mm) !important; /* nudge left to visually center on mobile */
+        transform: translateX(-9mm) !important; /* nudge left additional ~3mm to visually center on mobile */
     }
 
     .footer-links {
