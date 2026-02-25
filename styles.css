@@ -2676,6 +2676,50 @@ body.dark-mode .dark-mode-toggle:hover {
     color: var(--gray);
 }
 
+/* Mobile: center all footer elements */
+@media (max-width: 800px) {
+    .footer {
+        padding: 20px 0 16px !important;
+    }
+    .footer-content {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 16px !important;
+        align-items: center !important;
+        justify-items: center !important;
+        text-align: center !important;
+    }
+    .footer-logo {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+    .footer-logo img {
+        margin: 0 0 8px 0 !important;
+        height: 56px !important;
+    }
+    .footer-links {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 8px !important;
+        align-items: center !important;
+    }
+    .footer-links a {
+        padding: 4px 0 !important;
+    }
+    .footer-bottom {
+        padding-top: 16px !important;
+    }
+}
+
+/* Desktop: nudge footer tagline 3mm to the right */
+@media (min-width: 801px) {
+    .footer-logo p {
+        margin-left: 3mm !important;
+    }
+}
+
 /* AI Chatbot Widget */
 .ai-chat-widget {
     position: fixed;
