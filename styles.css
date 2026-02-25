@@ -2698,6 +2698,7 @@ body.dark-mode .dark-mode-toggle:hover {
     .footer-logo img {
         margin: 0 0 8px 0 !important;
         height: 56px !important;
+        transform: translateX(-5mm) !important; /* shift logo 5mm left on mobile */
     }
     .footer-links {
         display: flex !important;
@@ -2713,10 +2714,10 @@ body.dark-mode .dark-mode-toggle:hover {
     }
 }
 
-/* Desktop: nudge footer tagline 3mm to the right */
+/* Desktop: nudge footer tagline 1mm to the right */
 @media (min-width: 801px) {
     .footer-logo p {
-        margin-left: 3mm !important;
+        margin-left: 1mm !important;
     }
 }
 
