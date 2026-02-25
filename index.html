@@ -571,24 +571,31 @@ window.addEventListener('resize', updateLogoDisplay);
             <div class="footer-content">
                 <div class="footer-logo">
                     <img class="footer-logo-mobile" src="neologo-mobile.svg" alt="Neostore Logo Mobile" style="height:70px;width:auto;vertical-align:middle;background:transparent;position:relative;left:9mm;">
-                    <img class="footer-logo-desktop" src="neologo.svg" alt="Neostore Logo" style="height:70px;width:auto;vertical-align:middle;background:transparent;position:relative;left:0mm;display:none;">
+                    <img class="footer-logo-desktop" src="neologo.svg" alt="Neostore Logo" style="height:70px;width:auto;vertical-align:middle;background:transparent;position:relative;left:0mm;">
                     <p data-hr="Vaš partner za digitalno poslovanje" data-en="Your Partner for Digital Business">Vaš partner za digitalno poslovanje</p>
-                </div>
-                <div class="footer-links">
-                    <h4 data-hr="Brzi linkovi" data-en="Quick Links">Brzi linkovi</h4>
-                    <a href="#home" data-hr="Naslovna" data-en="Home">Naslovna</a>
-                    <a href="#telekomunikacije" data-hr="Telekomunikacije" data-en="Telecommunications">Telekomunikacije</a>
-                    <a href="#web" data-hr="Web Dizajn" data-en="Web Design">Web Dizajn</a>
-                    <a href="#ai-evolution" data-hr="AI Riješenja" data-en="AI Solutions">AI Riješenja</a>
-                    <a href="#kreditiranje" data-hr="Poslovno planiranje" data-en="Business Planning">Poslovno planiranje</a>
-                    <a href="#kontakt" data-hr="Kontakt" data-en="Contact">Kontakt</a>
-                </div>
-                <div class="footer-links">
-                    <h4 data-hr="Pravni dokumenti" data-en="Legal Documents">Pravni dokumenti</h4>
-                    <a href="izjava-o-privatnosti.html" target="_blank" rel="noopener" data-hr="Izjava o privatnosti" data-en="Privacy Statement">Izjava o privatnosti</a>
-                    <a href="politika-kolacica.html" target="_blank" rel="noopener" data-hr="Politika kolačića" data-en="Cookie Policy">Politika kolačića</a>
-                </div>
-            </div>
+                <script>
+                // Toggle between desktop and mobile logo, prevent double logo flash
+                function updateLogoDisplay() {
+                    var pcLogo = document.querySelector('.pc-logo');
+                    var mobileLogo = document.querySelector('.mobile-logo');
+                    if (window.innerWidth <= 800) {
+                        if (pcLogo) pcLogo.style.display = 'none';
+                        if (mobileLogo) mobileLogo.style.display = 'block';
+                    } else {
+                        if (pcLogo) pcLogo.style.display = 'inline-block';
+                        if (mobileLogo) mobileLogo.style.display = 'none';
+                    }
+                }
+                // Hide both logos by default to prevent flash
+                document.addEventListener('DOMContentLoaded', function() {
+                    var pcLogo = document.querySelector('.pc-logo');
+                    var mobileLogo = document.querySelector('.mobile-logo');
+                    if (pcLogo) pcLogo.style.display = 'none';
+                    if (mobileLogo) mobileLogo.style.display = 'none';
+                    updateLogoDisplay();
+                });
+                window.addEventListener('resize', updateLogoDisplay);
+                </script>
             <div class="footer-bottom">
                 <p>&copy; 2026 Neostore. <span data-hr="Sva prava pridržana." data-en="All rights reserved.">Sva prava pridržana.</span></p>
             </div>

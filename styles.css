@@ -1,11 +1,16 @@
-@media (min-width: 801px) and (max-width: 1024px) {
+@media (min-width: 801px) {
     .footer-logo-mobile {
         display: none !important;
     }
     .footer-logo-desktop {
         display: inline-block !important;
-        text-align: left !important;
         margin-left: 0 !important;
+    }
+    .footer-logo {
+        text-align: left !important;
+        justify-content: flex-start !important;
+        display: flex !important;
+        align-items: center !important;
     }
 }
 @media (max-width: 800px) {
@@ -14,6 +19,12 @@
     }
     .footer-logo-desktop {
         display: none !important;
+    }
+    .footer-logo {
+        text-align: center !important;
+        justify-content: center !important;
+        display: flex !important;
+        align-items: center !important;
     }
 }
 @media (min-width: 801px) and (max-width: 1024px) {
