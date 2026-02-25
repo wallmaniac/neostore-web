@@ -1216,6 +1216,19 @@ body.dark-mode .dark-mode-toggle:hover {
     }
 }
 
+/* Reduce top empty space of hero on PC by 12mm */
+@media (min-width: 801px) {
+    .hero {
+        padding-top: calc(80px - 12mm) !important;
+        min-height: calc(100vh + 8mm) !important; /* was +20mm, reduce by 12mm */
+    }
+    /* If hero-content had compensating negative margins, adjust slightly */
+    .hero-content {
+        margin-top: -19px; /* keep existing adjustment; override not needed */
+    }
+}
+
+
 
 .mouse {
     width: 30px;
