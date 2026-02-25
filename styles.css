@@ -2676,51 +2676,6 @@ body.dark-mode .dark-mode-toggle:hover {
     color: var(--gray);
 }
 
-/* Mobile: center all footer elements */
-@media (max-width: 800px) {
-    .footer {
-        padding: 20px 0 16px !important;
-    }
-    .footer-content {
-        display: flex !important;
-        flex-direction: column !important;
-        gap: 16px !important;
-        align-items: center !important;
-        justify-items: center !important;
-        text-align: center !important;
-    }
-    .footer-logo {
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: center !important;
-        justify-content: center !important;
-    }
-    .footer-logo img {
-        margin: 0 0 8px 0 !important;
-        height: 56px !important;
-        transform: translateX(-5mm) !important; /* shift logo 5mm left on mobile */
-    }
-    .footer-links {
-        display: flex !important;
-        flex-direction: column !important;
-        gap: 8px !important;
-        align-items: center !important;
-    }
-    .footer-links a {
-        padding: 4px 0 !important;
-    }
-    .footer-bottom {
-        padding-top: 16px !important;
-    }
-}
-
-/* Desktop: nudge footer tagline 1mm to the right */
-@media (min-width: 801px) {
-    .footer-logo p {
-        margin-left: 1mm !important;
-    }
-}
-
 /* AI Chatbot Widget */
 .ai-chat-widget {
     position: fixed;
@@ -3947,4 +3902,60 @@ body.dark-mode .hero-sparkles {
         animation: none !important;
     }
 }
+
+/* Footer: center all elements (including logo) on mobile */
+@media (max-width: 800px) {
+    .footer {
+        padding: 18px 0 !important;
+    }
+
+    .footer-content {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 12px !important;
+        margin-bottom: 12px !important;
+    }
+
+    .footer-logo {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        text-align: center !important;
+    }
+
+    .footer-logo img {
+        margin: 0 auto !important;
+        height: 70px !important;
+        width: auto !important;
+    }
+
+    .footer-links {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        text-align: center !important;
+        gap: 6px !important;
+    }
+
+    .footer-links:first-of-type {
+        /* ensure quick links appear stacked on mobile */
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 6px !important;
+    }
+
+    .footer-bottom {
+        text-align: center !important;
+        padding-top: 12px !important;
+    }
+}
+
+/* Desktop: nudge footer partner text 4mm to the right */
+@media (min-width: 801px) {
+    .footer-logo p {
+        margin-left: 4mm !important;
+    }
+}
+
 
