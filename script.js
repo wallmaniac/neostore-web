@@ -590,12 +590,10 @@ window.addEventListener('load', () => {
     'use strict';
     
     // ============================================
-    // HUGGINGFACE INFERENCE API (FREE AI via Backend Proxy)
+    // AI PROXY (Gemini 2.5 Flash via Cloudflare Worker)
     // ============================================
     // Token is stored on backend as environment variable
     // Frontend calls backend to avoid CORS issues
-        const HF_API_TOKEN = null; // Not needed in browser anymore
-        const HF_MODEL = 'mistralai/Mistral-7B-Instruct-v0.2';
         const USE_REAL_AI = true; // Always try backend proxy
     
     // Global function for inline onclick fallback
@@ -616,10 +614,9 @@ window.addEventListener('load', () => {
         }
     };
     
-    // Allow users to set API token (optional)
+    // Notice users about disabled legacy tokens if necessary
     window.setHFToken = function(token) {
-        localStorage.setItem('hf_api_token', token);
-        alert('HuggingFace token updated! Refresh the page for real AI responses.');
+        console.warn('Frontend API keys disabled for security. API runs through Cloudflare Worker now.');
     };
     
     // Knowledge base with detailed information from external sources
@@ -831,15 +828,15 @@ Neotel offers professional Web Design services tailored to your needs!`
         }
 
         async function getAIResponse(text) {
-            // If real AI is enabled, use HuggingFace API
+            // If real AI is enabled, use Gemini API worker
             if (USE_REAL_AI) {
-                return getHuggingFaceResponse(text);
+                return getGeminiResponse(text);
             }
             // Otherwise fall back to knowledge base
             return getKnowledgeBaseResponse(text);
         }
         
-        async function getHuggingFaceResponse(userMessage) {
+        async function getGeminiResponse(userMessage) {
             const isEn = currentLang === 'en';
 
             try {
@@ -1367,13 +1364,13 @@ function updateTitleWords(titleText) {
 }
 
 // Load content when page is ready
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', loadContent);
-} else {
-    loadContent();
-}
+// if (document.readyState === 'loading') {
+//     document.addEventListener('DOMContentLoaded', loadContent);
+// } else {
+//     loadContent();
+// }
 
 // Reload content when language changes
-window.addEventListener('languageChange', loadContent);
+// window.addEventListener('languageChange', loadContent);
 
 console.log('Neotel website loaded successfully! 🚀');
