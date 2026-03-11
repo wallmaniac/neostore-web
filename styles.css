@@ -219,6 +219,7 @@ body {
        align-items: center;
        padding: 1.7px 17px; /* reduced by ~15% */
        gap: 20px;
+       position: relative;
 }
 
 .logo {
@@ -2975,13 +2976,22 @@ body.dark-mode .dark-mode-toggle:hover {
             animation: none;
         }
 @media (max-width: 800px) {
+    .logo {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        order: unset;
+        justify-self: unset;
+        margin: 0;
+    }
     .nav-logo-img {
         height: 24px; /* Base mobile size */
         max-width: none;
-        margin-right: 2mm;
+        margin-right: 0;
         object-fit: contain;
-        transform: scale(2.2) translateX(3mm); /* Increased size for 120% (scale 2.2) */
-        transform-origin: left center;
+        transform: scale(1.54); /* Decreased size by 30% from 2.2 */
+        transform-origin: center center;
     }
 }
 
