@@ -3005,6 +3005,15 @@ body.dark-mode .dark-mode-toggle:hover {
         filter: none;
     }
 
+@media (max-width: 800px) {
+    .nav-logo-img:active,
+    .nav-logo-img:hover,
+    .nav-logo-img:focus {
+        transform: scale(1.54) !important; /* Preserve mobile scale on tap/hover */
+        transform-origin: center center;
+    }
+}
+
 
 @media (max-width: 1024px) {
     .dark-mode-toggle:hover,
